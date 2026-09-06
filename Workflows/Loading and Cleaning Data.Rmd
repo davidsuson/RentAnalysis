@@ -7,7 +7,7 @@ Hi ! I've written up these documents to guide you through using our code-base. F
 
 ```{r}
 
-# Don't forget to change the file path to a location you want to download the files to. You can also control left click on our custom functions to see the underlying code ! Please make sure that you use / instead of \ in the file path.
+# Don't forget to change the file path to a location you want to save the files to. You can also control left click on our custom functions to see the underlying code ! Please make sure that you use / instead of \ in the file path.
 
 download_nsw_datasets(file_path = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/nsw")
 
@@ -25,11 +25,19 @@ As we have downloaded the required files, we'll need to clean them, standardize 
 
 cleaned_vic_dataset <-  clean_vic_dataset("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/vic/VIC all quarters.xlsx")
 
-writexl::write_xlsx(cleaned_vic_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/vic/cleaned_vic_dataset.xlsx")
+writexl::write_xlsx(cleaned_vic_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/cleaned_vic_dataset.xlsx")
 
 ```
 
 ## NSW data
 
+```{r}
 
-## Creating joint dataset
+cleaned_nsw_dataset <- clean_nsw_datasets("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/nsw")
+
+writexl::write_xlsx(cleaned_nsw_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/cleaned_nsw_dataset.xlsx")
+
+```
+
+### Merging the two datasets
+
