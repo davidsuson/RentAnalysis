@@ -54,7 +54,9 @@ clean_vic_sheet <- function(raw_sheet, sheet_name) {
     ) %>%
     tidyr::separate(Date,
                     into = c("Quarter", "Year", "Measure"),
-                    sep = " ")
+                    sep = " ") %>%
+    dplyr::mutate(Year = as.numeric(Year),
+                  Quarter = as.numeric(Quarter))
 
   names(pivoted_data) <- names(pivoted_data) |>
     gsub("  ", "", x = _)
@@ -103,7 +105,11 @@ clean_vic_sheet <- function(raw_sheet, sheet_name) {
         Quarter == "Dec" ~ 4
       )
     ) %>%
-    dplyr::rename('New_Bonds' = "Count", 'Median_Rent' = "Median")
+    dplyr::rename('New_Bonds' = "Count", 'Median_Rent' = "Median") %>%
+    dplyr::mutate(
+      New_Bonds = as.numeric(New_Bonds),
+      Median_Rent = as.numeric(Median_Rent)
+    )
 
   final_data <- data_with_cleaned_columns %>%
     dplyr::filter(Year >= 2018)
