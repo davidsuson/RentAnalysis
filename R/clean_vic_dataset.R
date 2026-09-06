@@ -61,7 +61,12 @@ clean_vic_sheet <- function(raw_sheet, sheet_name) {
 
   # add required columns
 
-  num_br <- as.numeric(stringr::str_extract(sheet_name, "^\\d+"))
+  if (sheet_name != "All Properties"){
+    num_br <- as.numeric(stringr::str_extract(sheet_name, "^\\d+"))
+  } else {
+    num_br <- "All Sizes"
+  }
+
   dwelling <- stringr::str_trim(stringr::str_remove(sheet_name, "^\\d+br\\s*"))
 
   data_with_additional_columns <- pivoted_data %>%
@@ -83,7 +88,9 @@ clean_vic_sheet <- function(raw_sheet, sheet_name) {
       State = "VIC",
       Bedrooms = num_br,
       Dwelling = dwelling
-    )
+    ) %>%
+    mutate(Bedrooms = as.character(Bedrooms))
+  # This is because All Properties will have All Size in the bedroom field
 
   # clean up columns
 
