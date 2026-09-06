@@ -1,0 +1,185 @@
+---
+title: "Exploratory Analysis"
+output: html_document
+---
+
+This document will show all the figures and tables for the exploratory analysis done in the report.
+
+```{r}
+data <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset.xlsx")
+```
+
+# Comparing median rent and new bonds lodged
+
+This will compare median rent and new bonds lodged for all of VIC and NSW across:
+
+1.  All properties
+2.  1 bedroom
+3.  2 bedroom
+4.  3 bedroom
+5.  4 bedroom
+
+```{r}
+
+aggregate_data <- data %>% 
+  dplyr::filter(Dwelling == "All Properties",
+                Region %in% c("New South Wales", "Victoria"),
+                Bedrooms == "All Sizes")
+
+# Victoria only collects All Properties for All Sizes.
+
+p1 <- ggplot(
+  aggregate_data,
+  aes(
+    x = Quarter_Start_Date,
+    y = Median_Rent,
+    colour = Region,
+    group = Region
+  )
+) +
+  geom_line() +
+  geom_point() +
+  labs(
+    x = "Date",
+    y = "Median Weekly Rent",
+    colour = "Region"
+  ) +
+  theme_minimal()
+
+p2 <- ggplot(
+  aggregate_data,
+  aes(
+    x = Quarter_Start_Date,
+    y = New_Bonds,
+    colour = Region,
+    group = Region
+  )
+) +
+  geom_line() +
+  geom_point() +
+  labs(
+    x = "Date",
+    y = "New Bonds",
+    colour = "Region"
+  ) +
+  theme_minimal()
+
+combined_plot <- (p1 + p2) +
+  patchwork::plot_layout(guides = "collect") +
+  patchwork::plot_annotation(
+    title = "All properties with all bedroom sizes"
+  )
+
+combined_plot & 
+  theme(legend.position = "bottom")
+```
+```{r}
+
+
+aggregate_data <- data %>% 
+  dplyr::filter(Dwelling == "House",
+                Region %in% c("New South Wales", "Victoria"),
+                Bedrooms == "2")
+
+# Victoria only collects All Properties for All Sizes.
+p1 <- ggplot(
+  aggregate_data,
+  aes(
+    x = Quarter_Start_Date,
+    y = Median_Rent,
+    colour = Region,
+    group = Region
+  )
+) +
+  geom_line() +
+  geom_point() +
+  labs(
+    x = "Date",
+    y = "Median Weekly Rent",
+    colour = "Region"
+  ) +
+  theme_minimal()
+
+p2 <- ggplot(
+  aggregate_data,
+  aes(
+    x = Quarter_Start_Date,
+    y = New_Bonds,
+    colour = Region,
+    group = Region
+  )
+) +
+  geom_line() +
+  geom_point() +
+  labs(
+    x = "Date",
+    y = "New Bonds",
+    colour = "Region"
+  ) +
+  theme_minimal()
+
+combined_plot <- (p1 + p2) +
+  patchwork::plot_layout(guides = "collect") +
+  patchwork::plot_annotation(
+    title = "Houses with 2 bedrooms"
+  )
+
+combined_plot & 
+  theme(legend.position = "bottom")
+
+```
+```{r}
+
+
+aggregate_data <- data %>% 
+  dplyr::filter(Dwelling == "Flat",
+                Region %in% c("New South Wales", "Victoria"),
+                Bedrooms == "1")
+
+# Victoria only collects All Properties for All Sizes.
+p1 <- ggplot(
+  aggregate_data,
+  aes(
+    x = Quarter_Start_Date,
+    y = Median_Rent,
+    colour = Region,
+    group = Region
+  )
+) +
+  geom_line() +
+  geom_point() +
+  labs(
+    x = "Date",
+    y = "Median Weekly Rent",
+    colour = "Region"
+  ) +
+  theme_minimal()
+
+p2 <- ggplot(
+  aggregate_data,
+  aes(
+    x = Quarter_Start_Date,
+    y = New_Bonds,
+    colour = Region,
+    group = Region
+  )
+) +
+  geom_line() +
+  geom_point() +
+  labs(
+    x = "Date",
+    y = "New Bonds",
+    colour = "Region"
+  ) +
+  theme_minimal()
+
+combined_plot <- (p1 + p2) +
+  patchwork::plot_layout(guides = "collect") +
+  patchwork::plot_annotation(
+    title = "Flats with 1 bedroom"
+  )
+
+combined_plot & 
+  theme(legend.position = "bottom")
+
+```
