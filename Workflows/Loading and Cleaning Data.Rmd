@@ -1,0 +1,16 @@
+---
+title: "Loading and Cleaning Data"
+output: html_document
+---
+
+Hi! I've written up these documents to guide you through using our code-base. First, please load the data! Technically, in the ZIP file provided to you the raw data files will already be there so this may not be necessary unless you want to check.
+
+
+```{r}
+
+# Don't forget to change the file path to a location you want to download the files to
+
+download_nsw_datasets(file_path = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/nsw")
+
+
+```
