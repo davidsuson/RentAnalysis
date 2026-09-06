@@ -1,7 +1,7 @@
 ---title:"Loading and Cleaning Data"
 output:html_document---# Introduction
 
-Hi ! I've written up these documents to guide you through using our code-base. First, please load the data! Technically, in the ZIP file provided to you the raw data files will already be there so loading up the first chunk may not be necessary unless you want to check.
+Hi! I've written up these documents to guide you through using our code-base. First, please load the data! Technically, in the ZIP file provided to you the raw data files will already be there so loading up the first chunk may not be necessary unless you want to check.
 
 # Loading data
 
@@ -45,6 +45,6 @@ writexl::write_xlsx(cleaned_nsw_dataset, "C:/Users/David/Desktop/MicroEcon - Ren
 
 combined_dataset <- dplyr::bind_rows(cleaned_nsw_dataset, cleaned_vic_dataset)
 
-writexl::write_xlsx(cleaned_nsw_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset.xlsx")
+writexl::write_xlsx(combined_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset.xlsx")
 
 ```

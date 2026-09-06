@@ -54,6 +54,9 @@ clean_nsw_sheet <- function(raw_sheet, file_name) {
 
   # Select required columns and match to the VIC dataset names
   required_cols <- c(
+    "Greater Metropolitan Region (GMR)",
+    "GMR (Greater Metropolitan Region)",
+    "Greater Sydney",
     "Rings",
     "Local Government Area (LGA)",
     "LGA (Local Government Areas)",
@@ -70,11 +73,19 @@ clean_nsw_sheet <- function(raw_sheet, file_name) {
       "LGA" = any_of(
         c("Local Government Area (LGA)", "LGA (Local Government Areas)")
       ),
+      "GMR" = any_of(
+        c("Greater Metropolitan Region (GMR)", "GMR (Greater Metropolitan Region)")
+      ),
       "Dwelling" = "Dwelling Types",
       "Bedrooms" = any_of(c("Number of Bedrooms", "Bedroom Numbers")),
       "Median_Rent" = "Median Weekly Rent for New Bonds",
       "New_Bonds" = "New Bonds LodgedNo."
-    )
+    ) %>%
+    dplyr::filter(
+      GMR == "Total",
+      `Greater Sydney` == "Total"
+    ) %>%
+    dplyr::select(-c(GMR, `Greater Sydney`))
 
   # Filter sheets to only include data present in the VIC data-set
   # Also rename for consistent conventions
