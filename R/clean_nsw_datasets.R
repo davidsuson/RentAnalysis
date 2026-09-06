@@ -109,8 +109,25 @@ clean_nsw_sheet <- function(raw_sheet, file_name) {
     ) %>%
     dplyr::filter(Region != "New South Wales" |
                     LGA == "Table Total") %>%
-    dplyr::distinct() %>%
-    dplyr::mutate(across(c(Median_Rent, New_Bonds), ~ replace(.x, .x %in% c("-", "s"), NA)))
+    dplyr::distinct()
+
+  value_corrected_sheet <- filtered_sheet %>%
+    dplyr::mutate(
+      Median_Rent = gsub(",", "", Median_Rent),
+      New_Bonds = gsub(",", "", New_Bonds),
+      across(
+        c(Median_Rent, New_Bonds),
+        ~ dplyr::case_when(
+          .x == "s" ~ "30",
+          .x == "-" ~ "10",
+          TRUE ~ .x
+        )
+      ),
+      New_Bonds = as.numeric(New_Bonds),
+      Median_Rent = as.numeric(Median_Rent)
+    )
+  # ASSUMPTION: When a "-" is reported this means 10 or less bonds lodged. "s" is 30 or less bonds lodged.
+  # Just assume it is the average.
   # ASSUMPTION: 4 or  more is just 4. Likely overstates the rent.
   # NOTE: If the Region is NSW and the LGA is Total, then Total is just the Table Total.
   # NOTE: If the Region is not NSW and the LGA is Total, then Total is just the Group Total.
@@ -123,14 +140,14 @@ clean_nsw_sheet <- function(raw_sheet, file_name) {
   # Need to find relavent year and quarter
   date_part <- stringr::str_extract(file_name, "(?i)(mar|jun|sep|dec) \\d{4}")
   month <- stringr::str_extract(date_part, "[A-Za-z]+")
-  year <- stringr::str_extract(date_part, "\\d{4}")
+  year <- as.numeric(stringr::str_extract(date_part, "\\d{4}"))
 
   quarter <- dplyr::case_when(month == "mar" ~ 1,
                               month == "jun" ~ 2,
                               month == "sep" ~ 3,
                               month == "dec" ~ 4)
 
-  sheet_with_additional_details <- filtered_sheet %>%
+  sheet_with_additional_details <- value_corrected_sheet %>%
     dplyr::mutate(
       State = "NSW",
       Year = year,
