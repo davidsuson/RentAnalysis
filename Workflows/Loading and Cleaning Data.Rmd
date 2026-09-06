@@ -1,16 +1,35 @@
----
-title: "Loading and Cleaning Data"
-output: html_document
----
+---title:"Loading and Cleaning Data"
+output:html_document---# Introduction
 
-Hi! I've written up these documents to guide you through using our code-base. First, please load the data! Technically, in the ZIP file provided to you the raw data files will already be there so this may not be necessary unless you want to check.
+Hi ! I've written up these documents to guide you through using our code-base. First, please load the data! Technically, in the ZIP file provided to you the raw data files will already be there so loading up the first chunk may not be necessary unless you want to check.
 
+# Loading data
 
 ```{r}
 
-# Don't forget to change the file path to a location you want to download the files to
+# Don't forget to change the file path to a location you want to download the files to. You can also control left click on our custom functions to see the underlying code ! Please make sure that you use / instead of \ in the file path.
 
 download_nsw_datasets(file_path = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/nsw")
 
+# Note that for VIC there is only one data set you need to download from "https://discover.data.vic.gov.au/dataset/rental-report-quarterly-quarterly-median-rents-by-lga/resource/458264e7-0b2f-4061-80b4-c73ad4e94aa7" which makes things very easy. However, we had to make some manual adjustments to the sheet to make processing easier so the downloaded excel sheet won't match the one we have provided.
 
 ```
+
+# Cleaning data
+
+As we have downloaded the required files, we'll need to clean them, standardize their columns and join them together. NSW data is much harder to do than VIC.
+
+## VIC data
+
+```{r}
+
+cleaned_vic_dataset <-  clean_vic_dataset("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/vic/VIC all quarters.xlsx")
+
+writexl::write_xlsx(cleaned_vic_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/vic/cleaned_vic_dataset.xlsx")
+
+```
+
+## NSW data
+
+
+## Creating joint dataset
