@@ -126,19 +126,20 @@ clean_nsw_sheet <- function(raw_sheet, file_name) {
     dplyr::mutate(
       Median_Rent = gsub(",", "", Median_Rent),
       New_Bonds = gsub(",", "", New_Bonds),
-      across(
-        c(Median_Rent, New_Bonds),
-        ~ dplyr::case_when(
-          .x == "s" ~ "30",
-          .x == "-" ~ "10",
-          TRUE ~ .x
-        )
+      Median_Rent = dplyr::case_when(
+        Median_Rent %in% c("s", "-") ~ NA,
+        TRUE ~ Median_Rent
+      ),
+      New_Bonds = dplyr::case_when(
+        New_Bonds == "s" ~ "30",
+        New_Bonds == "-" ~ "10",
+        TRUE ~ New_Bonds
       ),
       New_Bonds = as.numeric(New_Bonds),
       Median_Rent = as.numeric(Median_Rent)
     )
   # ASSUMPTION: When a "-" is reported this means 10 or less bonds lodged. "s" is 30 or less bonds lodged.
-  # Just assume it is the average.
+  # Just assume it is the max for New_Bonds and NA for median rent.
   # ASSUMPTION: 4 or  more is just 4. Likely overstates the rent.
   # NOTE: If the Region is NSW and the LGA is Total, then Total is just the Table Total.
   # NOTE: If the Region is not NSW and the LGA is Total, then Total is just the Group Total.
