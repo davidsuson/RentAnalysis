@@ -3,6 +3,16 @@ output:html_document---# Introduction
 
 Hi! I've written up these documents to guide you through using our code-base. First, please load the data! Technically, in the ZIP file provided to you the raw data files will already be there so loading up the first chunk may not be necessary unless you want to check.
 
+# Loading the package in the dev environment
+
+I have put all the code into a package. You can use the load_all function from devtools to load it. If you make edits to the code, you have to reload the package but running the command again.
+
+```{r}
+
+devtools::load_all()
+
+```
+
 # Loading data
 
 ```{r}
