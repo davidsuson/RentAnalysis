@@ -74,7 +74,7 @@ clean_vic_sheet <- function(raw_sheet, sheet_name) {
   dwelling <- stringr::str_trim(stringr::str_remove(sheet_name, "^\\d+br\\s*"))
 
   data_with_additional_columns <- pivoted_data |>
-    dplyr::mutate(dplyr::across(Value, ~ na_if(.x, "-"))) |>
+    dplyr::mutate(dplyr::across(Value, ~ dplyr::na_if(.x, "-"))) |>
     tidyr::pivot_wider(names_from = Measure, values_from = Value) |>
     dplyr::mutate(
       Quarter_Start_Date = dplyr::case_when(

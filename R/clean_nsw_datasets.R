@@ -66,8 +66,8 @@ clean_nsw_sheet <- function(raw_sheet, file_name) {
     "Median Weekly Rent for New Bonds",
     "New Bonds LodgedNo."
   )
-  sheet_with_required_cols <- raw_sheet %>%
-    dplyr::select(dplyr::any_of(required_cols)) %>%
+  sheet_with_required_cols <- raw_sheet |>
+    dplyr::select(dplyr::any_of(required_cols)) |>
     dplyr::rename(
       "Region" = "Rings",
       "LGA" = dplyr::any_of(
@@ -80,16 +80,16 @@ clean_nsw_sheet <- function(raw_sheet, file_name) {
       "Bedrooms" = dplyr::any_of(c("Number of Bedrooms", "Bedroom Numbers")),
       "Median_Rent" = "Median Weekly Rent for New Bonds",
       "New_Bonds" = "New Bonds LodgedNo."
-    ) %>%
+    ) |>
     dplyr::filter(
       GMR == "Total",
       `Greater Sydney` == "Total"
-    ) %>%
+    ) |>
     dplyr::select(-c(GMR, `Greater Sydney`))
 
   # Filter sheets to only include data present in the VIC data-set
   # Also rename for consistent conventions
-  filtered_sheet <- sheet_with_required_cols %>%
+  filtered_sheet <- sheet_with_required_cols |>
     dplyr::filter(
       Dwelling %in% c("House", "Total", "Flat/Unit"),
       Bedrooms %in% c(
@@ -99,8 +99,8 @@ clean_nsw_sheet <- function(raw_sheet, file_name) {
         "3 Bedrooms",
         "4 or more Bedrooms"
       )
-    ) %>%
-    mutate(
+    ) |>
+    dplyr::mutate(
       Bedrooms = dplyr::recode(
         Bedrooms,
         "Total" = "All Sizes",
@@ -117,12 +117,12 @@ clean_nsw_sheet <- function(raw_sheet, file_name) {
           LGA == "Total" ~ "Group Total",
         TRUE ~ LGA
       )
-    ) %>%
+    ) |>
     dplyr::filter(Region != "New South Wales" |
-                    LGA == "Table Total") %>%
+                    LGA == "Table Total") |>
     dplyr::distinct()
 
-  value_corrected_sheet <- filtered_sheet %>%
+  value_corrected_sheet <- filtered_sheet |>
     dplyr::mutate(
       Median_Rent = gsub(",", "", Median_Rent),
       New_Bonds = gsub(",", "", New_Bonds),
@@ -159,7 +159,7 @@ clean_nsw_sheet <- function(raw_sheet, file_name) {
                               month == "sep" ~ 3,
                               month == "dec" ~ 4)
 
-  sheet_with_additional_details <- value_corrected_sheet %>%
+  sheet_with_additional_details <- value_corrected_sheet |>
     dplyr::mutate(
       State = "NSW",
       Year = year,
