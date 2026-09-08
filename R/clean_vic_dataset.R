@@ -11,8 +11,12 @@ clean_vic_dataset <- function(raw_sheet_path) {
   sheet_names <-  readxl::excel_sheets(raw_sheet_path)
 
   cleaned_sheets <- lapply(sheet_names, function(sheet_name) {
-    raw_sheet <- readxl::read_xlsx(raw_sheet_path, col_names = FALSE, sheet = sheet_name,
-                                   .name_repair = "minimal")
+    raw_sheet <- readxl::read_xlsx(
+      raw_sheet_path,
+      col_names = FALSE,
+      sheet = sheet_name,
+      .name_repair = "minimal"
+    )
     cleaned_sheet <- clean_vic_sheet(raw_sheet, sheet_name)
     return(cleaned_sheet)
   })
@@ -48,7 +52,7 @@ clean_vic_sheet <- function(raw_sheet, sheet_name) {
   cols_to_pivot <- names(raw_sheet)[!names(raw_sheet) %in% c("  LGA", "  Region")]
   pivoted_data <- raw_sheet %>%
     tidyr::pivot_longer(
-      cols = all_of(cols_to_pivot),
+      cols = dplyr::all_of(cols_to_pivot),
       names_to = "Date",
       values_to = "Value"
     ) %>%
@@ -61,7 +65,7 @@ clean_vic_sheet <- function(raw_sheet, sheet_name) {
 
   # add required columns
 
-  if (sheet_name != "All Properties"){
+  if (sheet_name != "All Properties") {
     num_br <- as.numeric(stringr::str_extract(sheet_name, "^\\d+"))
   } else {
     num_br <- "All Sizes"
@@ -70,16 +74,16 @@ clean_vic_sheet <- function(raw_sheet, sheet_name) {
   dwelling <- stringr::str_trim(stringr::str_remove(sheet_name, "^\\d+br\\s*"))
 
   data_with_additional_columns <- pivoted_data %>%
-    mutate(across(Value, ~ na_if(.x, "-"))) %>%
+    dplyr::mutate(dplyr::across(Value, ~ na_if(.x, "-"))) %>%
     tidyr::pivot_wider(names_from = Measure, values_from = Value) %>%
-    mutate(
-      Quarter_Start_Date = case_when(
+    dplyr::mutate(
+      Quarter_Start_Date = dplyr::case_when(
         Quarter == "Mar" ~ as.Date(paste0(Year, "-01-01")),
         Quarter == "Jun" ~ as.Date(paste0(Year, "-04-01")),
         Quarter == "Sep" ~ as.Date(paste0(Year, "-07-01")),
         Quarter == "Dec" ~ as.Date(paste0(Year, "-10-01"))
       ),
-      Quarter_End_Date = case_when(
+      Quarter_End_Date = dplyr::case_when(
         Quarter == "Mar" ~ as.Date(paste0(Year, "-03-31")),
         Quarter == "Jun" ~ as.Date(paste0(Year, "-06-30")),
         Quarter == "Sep" ~ as.Date(paste0(Year, "-09-30")),
@@ -89,14 +93,14 @@ clean_vic_sheet <- function(raw_sheet, sheet_name) {
       Bedrooms = num_br,
       Dwelling = dwelling
     ) %>%
-    mutate(Bedrooms = as.character(Bedrooms))
+    dplyr::mutate(Bedrooms = as.character(Bedrooms))
   # This is because All Properties will have All Size in the bedroom field
 
   # clean up columns
 
   data_with_cleaned_columns <- data_with_additional_columns %>%
-    mutate(
-      Quarter = case_when(
+    dplyr::mutate(
+      Quarter = dplyr::case_when(
         Quarter == "Mar" ~ 1,
         Quarter == "Jun" ~ 2,
         Quarter == "Sep" ~ 3,
