@@ -67,17 +67,17 @@ clean_nsw_sheet <- function(raw_sheet, file_name) {
     "New Bonds LodgedNo."
   )
   sheet_with_required_cols <- raw_sheet %>%
-    dplyr::select(any_of(required_cols)) %>%
+    dplyr::select(dplyr::any_of(required_cols)) %>%
     dplyr::rename(
       "Region" = "Rings",
-      "LGA" = any_of(
+      "LGA" = dplyr::any_of(
         c("Local Government Area (LGA)", "LGA (Local Government Areas)")
       ),
-      "GMR" = any_of(
+      "GMR" = dplyr::any_of(
         c("Greater Metropolitan Region (GMR)", "GMR (Greater Metropolitan Region)")
       ),
       "Dwelling" = "Dwelling Types",
-      "Bedrooms" = any_of(c("Number of Bedrooms", "Bedroom Numbers")),
+      "Bedrooms" = dplyr::any_of(c("Number of Bedrooms", "Bedroom Numbers")),
       "Median_Rent" = "Median Weekly Rent for New Bonds",
       "New_Bonds" = "New Bonds LodgedNo."
     ) %>%
@@ -101,7 +101,7 @@ clean_nsw_sheet <- function(raw_sheet, file_name) {
       )
     ) %>%
     mutate(
-      Bedrooms = recode(
+      Bedrooms = dplyr::recode(
         Bedrooms,
         "Total" = "All Sizes",
         "1 Bedroom" = "1",
@@ -109,9 +109,9 @@ clean_nsw_sheet <- function(raw_sheet, file_name) {
         "3 Bedrooms" = "3",
         "4 or more Bedrooms" = "4"
       ),
-      Dwelling = recode(Dwelling, "Total" = "All Properties", "Flat/Unit" = "Flat"),
-      Region = recode(Region, "Total" = "New South Wales"),
-      LGA = case_when(
+      Dwelling = dplyr::recode(Dwelling, "Total" = "All Properties", "Flat/Unit" = "Flat"),
+      Region = dplyr::recode(Region, "Total" = "New South Wales"),
+      LGA = dplyr::case_when(
         Region == "New South Wales" & LGA == "Total" ~ "Table Total",
         Region != "New South Wales" &
           LGA == "Total" ~ "Group Total",
@@ -164,13 +164,13 @@ clean_nsw_sheet <- function(raw_sheet, file_name) {
       State = "NSW",
       Year = year,
       Quarter = quarter,
-      Quarter_Start_Date = case_when(
+      Quarter_Start_Date = dplyr::case_when(
         month == "mar" ~ as.Date(paste0(year, "-01-01")),
         month == "jun" ~ as.Date(paste0(year, "-04-01")),
         month == "sep" ~ as.Date(paste0(year, "-07-01")),
         month == "dec" ~ as.Date(paste0(year, "-10-01"))
       ),
-      Quarter_End_Date = case_when(
+      Quarter_End_Date = dplyr::case_when(
         month == "mar" ~ as.Date(paste0(year, "-03-31")),
         month == "jun" ~ as.Date(paste0(year, "-06-30")),
         month == "sep" ~ as.Date(paste0(year, "-09-30")),
