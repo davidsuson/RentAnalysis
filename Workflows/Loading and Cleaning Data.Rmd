@@ -9,6 +9,8 @@ Hi! I've written up these documents to guide you through using our code-base. Fi
 
 # Don't forget to change the file path to a location you want to save the files to. You can also control left click on our custom functions to see the underlying code ! Please make sure that you use / instead of \ in the file path.
 
+# PLEASE DO NOT RUN THIS IF YOU DO NOT WANT TO REDOWNLOAD THE NSW RAW DATA FILES.
+
 download_nsw_datasets(file_path = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/nsw")
 
 # Note that for VIC there is only one data set you need to download from "https://discover.data.vic.gov.au/dataset/rental-report-quarterly-quarterly-median-rents-by-lga/resource/458264e7-0b2f-4061-80b4-c73ad4e94aa7" which makes things very easy. However, we had to make some manual adjustments to the sheet to make processing easier so the downloaded excel sheet won't match the one we have provided.
