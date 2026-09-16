@@ -143,7 +143,11 @@ clean_pre_2020_Q3_sa_sheet <- function(raw_sheet, file_name) {
       Region = ifelse(LGA == "South Australia", LGA, NA),
       LGA = ifelse(LGA == "South Australia", "Table Total", LGA)
     ) |>
-    tidyr::pivot_wider(names_from = "Measure", values_from = "Values")
+    tidyr::pivot_wider(names_from = "Measure", values_from = "Values") |>
+    dplyr::mutate(
+      Median_Rent = as.numeric(Median_Rent),
+      New_Bonds = as.numeric(New_Bonds)
+    )
 
   date_part <- stringr::str_extract(file_name, "(?i)(mar|jun|sep|dec) \\d{4}")
   month <- stringr::str_extract(date_part, "[A-Za-z]+")
@@ -258,7 +262,11 @@ clean_post_2020_Q3_sa_sheet <- function(raw_sheet, file_name) {
       Values = recode(Values, "*" = "5"),
       Measure = recode(Measure, "Median" = "Median_Rent", "Count" = "New_Bonds")
     ) |>
-    tidyr::pivot_wider(names_from = "Measure", values_from = "Values")
+    tidyr::pivot_wider(names_from = "Measure", values_from = "Values") |>
+    dplyr::mutate(
+      Median_Rent = as.numeric(Median_Rent),
+      New_Bonds = as.numeric(New_Bonds)
+    )
 
   date_part <- stringr::str_extract(file_name, "(?i)(mar|jun|sep|dec) \\d{4}")
   month <- stringr::str_extract(date_part, "[A-Za-z]+")
