@@ -31,7 +31,7 @@ download_nsw_datasets <- function(file_path) {
   dataset_links <- rent_links[years >= 2018]
 
   for (link in dataset_links) {
-    file_name <- create_file_name(link)
+    file_name <- create_nsw_file_name(link)
     file_save <- paste0(file_path, "/", file_name)
     cleaned_link <- paste0("https://dcj.nsw.gov.au", link)
 
@@ -45,12 +45,12 @@ download_nsw_datasets <- function(file_path) {
 
 # HELPERS
 
-#' create_file_name
+#' create_nsw_file_name
 #'
 #' @param link url to convert to a valid file name
 #'
 #' @returns A valid file name in the form "NSW month year quarter"
-create_file_name <- function(link) {
+create_nsw_file_name <- function(link) {
   months <- c(
     january = "jan",
     february = "feb",
