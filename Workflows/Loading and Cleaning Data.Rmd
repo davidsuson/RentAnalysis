@@ -60,7 +60,7 @@ writexl::write_xlsx(cleaned_vic_dataset, "C:/Users/David/Desktop/MicroEcon - Ren
 Please note that we'll want all other datasets to only have observations for following combinations of dwelling and bedroom:
 1. Flat with 1,2 or 3 bedrooms
 2  House with 2,3 or 4 bedrooms
-2. All properties with all size bedrooms
+2. All Properties with all size bedrooms
 
 I will just filter this at the end.
 
@@ -98,15 +98,43 @@ writexl::write_xlsx(cleaned_sa_dataset, "C:/Users/David/Desktop/MicroEcon - Rent
 
 ```{r}
 
-combined_dataset <- dplyr::bind_rows(cleaned_nsw_dataset, cleaned_vic_dataset,)
+combined_dataset <- dplyr::bind_rows(cleaned_nsw_dataset, cleaned_vic_dataset, cleaned_sa_dataset, cleaned_qld_dataset)
 
-# Filter for common time period and required options
+max_year_and_quarter <- combined_dataset |>
+  dplyr::group_by(State) |>
+  dplyr::summarise(Max_Year = max(Year),
+                   Max_Quarter = max(Quarter))
 
-writexl::write_xlsx(combined_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset.xlsx")
+# As mentioned beforehand, NSW only has data available after 2018. Now, just find the common max year and quarter across all of the states. # Filter for common time period and required options
 
-```
+filtered_combined_dataset <- combined_dataset |>
+  dplyr::filter(Year <= min(max_year_and_quarter$Max_Year) 
+                & Quarter <= min(max_year_and_quarter$Max_Quarter),
+                Year >= 2018,
+                (Dwelling == "Flat" & Bedrooms %in% c(1, 2, 3)) |
+                (Dwelling == "House" & Bedrooms %in% c(2, 3, 4)) |
+                (Dwelling == "All Properties" & Bedrooms == "All Size")
+                )
 
-## Cleaning covariates
+state_observations <- filtered_combined_dataset |>
+  dplyr::filter(LGA == "Table Total") |>
+  dplyr::select(-c(Region, LGA))
 
+region_observations <- filtered_combined_dataset |>
+  dplyr::filter(LGA == "Group Total") |>
+  dplyr::select(-LGA)
 
-## Merging covariates
+LGA_observations <- filtered_combined_dataset |>
+  dplyr::filter(LGA != "Group Total",
+                LGA != "Table Total") |>
+  dplyr::select(-Region)
+
+excel_file <- list(
+  "State" = state_observations,
+  "Region" = region_observations,
+  "LGA" = LGA_observations
+)
+
+writexl::write_xlsx(excel_file, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_no_controls.xlsx")
+
+``` 
