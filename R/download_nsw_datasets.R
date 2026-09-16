@@ -52,17 +52,9 @@ download_nsw_datasets <- function(file_path) {
 #' @returns A valid file name in the form "NSW month year quarter"
 create_nsw_file_name <- function(link) {
   months <- c(
-    january = "jan",
-    february = "feb",
     march = "mar",
-    april = "apr",
-    may = "may",
     june = "jun",
-    july = "jul",
-    august = "aug",
     september = "sep",
-    october = "oct",
-    november = "nov",
     december = "dec"
   )
 
