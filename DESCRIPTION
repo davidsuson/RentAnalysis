@@ -18,4 +18,5 @@ Imports:
     rlang,
     rvest,
     stringr,
-    tidyr
+    tidyr,
+    zoo
