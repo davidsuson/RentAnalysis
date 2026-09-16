@@ -2,6 +2,7 @@
 
 export(clean_nsw_datasets)
 export(clean_qld_dataset)
+export(clean_sa_datasets)
 export(clean_vic_dataset)
 export(download_nsw_datasets)
 export(download_sa_datasets)
