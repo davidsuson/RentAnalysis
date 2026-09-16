@@ -41,6 +41,13 @@ writexl::write_xlsx(cleaned_vic_dataset, "C:/Users/David/Desktop/MicroEcon - Ren
 
 ```
 
+Please note that we'll want all other datasets to only have observations for following combinations of dwelling and bedroom:
+1. Flat with 1,2 or 3 bedrooms
+2  House with 2,3 or 4 bedrooms
+2. All properties with all size bedrooms
+
+I will just filter this at the end.
+
 ## NSW data
 
 ```{r}
@@ -51,12 +58,30 @@ writexl::write_xlsx(cleaned_nsw_dataset, "C:/Users/David/Desktop/MicroEcon - Ren
 
 ```
 
-### Merging the two datasets
+## QLD data
+
+```{r}
+
+cleaned_qld_dataset <- clean_qld_dataset("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/qld/rta-bond-statistics.xlsx")
+
+writexl::write_xlsx(cleaned_qld_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/cleaned_qld_dataset.xlsx")
+
+```
+
+
+### Merging the four datasets
 
 ```{r}
 
 combined_dataset <- dplyr::bind_rows(cleaned_nsw_dataset, cleaned_vic_dataset)
 
+# Filter for common time period and required options
+
 writexl::write_xlsx(combined_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset.xlsx")
 
 ```
+
+## Cleaning covariates
+
+
+## Merging covariates

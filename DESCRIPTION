@@ -15,6 +15,7 @@ Imports:
     magrittr,
     patchwork,
     readxl,
+    rlang,
     rvest,
     stringr,
     tidyr
