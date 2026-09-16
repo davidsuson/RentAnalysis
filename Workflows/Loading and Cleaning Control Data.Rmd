@@ -17,3 +17,9 @@ devtools::load_all()
 
 # Loading data
 
+```{r}
+
+rent_data <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_no_controls.xlsx",
+                               sheet = "LGA")
+
+```
