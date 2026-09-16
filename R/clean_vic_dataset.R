@@ -114,8 +114,7 @@ clean_vic_sheet <- function(raw_sheet, sheet_name) {
       Year = as.numeric(Year)
     )
 
-  final_data <- data_with_cleaned_columns |>
-    dplyr::filter(Year >= 2018)
+  final_data <- data_with_cleaned_columns
 
   return(final_data)
 }
