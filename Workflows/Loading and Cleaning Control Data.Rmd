@@ -1,0 +1,19 @@
+---title:"Loading and Cleaning Data"
+output:html_document---
+
+# Introduction
+
+Hi! This markdown file will walk you through the controls we're going to use for the project.
+
+# Loading the package in the dev environment
+
+I have put all the code into a package. You can use the load_all function from devtools to load it. If you make edits to the code, you have to reload the package and run the command again.
+
+```{r}
+
+devtools::load_all()
+
+```
+
+# Loading data
+

@@ -1,11 +1,13 @@
 ---title:"Loading and Cleaning Data"
-output:html_document---# Introduction
+output:html_document---
+
+# Introduction
 
 Hi! I've written up these documents to guide you through using our code-base. First, please load the data! Technically, in the ZIP file provided to you the raw data files will already be there so loading up the first chunk may not be necessary unless you want to check.
 
 # Loading the package in the dev environment
 
-I have put all the code into a package. You can use the load_all function from devtools to load it. If you make edits to the code, you have to reload the package but running the command again.
+I have put all the code into a package. You can use the load_all function from devtools to load it. If you make edits to the code, you have to reload the package and run the command again.
 
 ```{r}
 
@@ -137,4 +139,4 @@ excel_file <- list(
 
 writexl::write_xlsx(excel_file, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_no_controls.xlsx")
 
-``` 
+```   
