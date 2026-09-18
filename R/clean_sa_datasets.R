@@ -117,7 +117,8 @@ clean_pre_2020_Q3_sa_sheet <- function(raw_sheet, file_name) {
       Measure = gsub("BR", "", Measure),
       Measure = trimws(gsub("\\s+", " ", Measure))
     ) |>
-    dplyr::filter(!grepl("unknown", Measure, ignore.case = TRUE))
+    dplyr::filter(!grepl("unknown", Measure, ignore.case = TRUE),
+                  !grepl("Unknown", LGA, ignore.case = TRUE))
 
   # * only shows up for counts. Where there are 1 to 5 dwellings, the number is replaced with "*"
 
@@ -246,7 +247,8 @@ clean_post_2020_Q3_sa_sheet <- function(raw_sheet, file_name) {
 
   pivoted_df <- required_LGAs |>
     tidyr::pivot_longer(cols_to_pivot, values_to = "Values", names_to = "Measure") |>
-    dplyr::filter(!grepl("Unknown", Measure, ignore.case = TRUE)) |>
+    dplyr::filter(!grepl("Unknown", Measure, ignore.case = TRUE),
+                  !grepl("Unknown", LGA, ignore.case = TRUE)) |>
     tidyr::separate_wider_delim(Measure,
                                 delim = "-",
                                 names = c("Dwelling", "Bedrooms", "Measure")) |>
