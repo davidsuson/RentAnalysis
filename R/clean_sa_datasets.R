@@ -26,7 +26,8 @@ clean_sa_datasets <- function(folder_path) {
     return(cleaned_sheet)
   })
 
-  cleaned_data <- dplyr::bind_rows(cleaned_sheets)
+  cleaned_data <- dplyr::bind_rows(cleaned_sheets) |>
+    dplyr::filter(LGA != "Unknown")
 
   return(cleaned_data)
 
