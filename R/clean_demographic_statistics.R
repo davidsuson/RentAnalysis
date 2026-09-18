@@ -19,7 +19,8 @@ clean_demographic_statistics <- function(raw_sheet_path){
     return(cleaned_sheet)
   })
 
-  cleaned_dataset <- purrr::reduce(cleaned_sheets, dplyr::left_join, by = c("Year", "State", "LGA"))
+  cleaned_dataset <- purrr::reduce(cleaned_sheets, dplyr::left_join, by = c("Year", "State", "LGA")) |>
+    dplyr::mutate(Year = as.numeric(Year))
 
   return(cleaned_dataset)
 

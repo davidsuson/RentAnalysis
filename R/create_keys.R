@@ -88,7 +88,8 @@ create_demographic_table_key <- function(){
     "Norwood Payneham St Peters",
     "Port Pirie City and Dists",
     "The Coorong",
-    "Orroroo/Carrieton"
+    "Orroroo/Carrieton",
+    "Greater Hume Shire"
   )
 
   matching_LGA_name_in_demo_table <- c(
@@ -115,7 +116,8 @@ create_demographic_table_key <- function(){
     "Norwood Payneham and St Peters",
     "Port Pirie",
     "Coorong",
-    "Orroroo Carrieton"
+    "Orroroo Carrieton",
+    "Greater Hume"
   )
 
   demo_LGA_name_key <- tibble::tibble(

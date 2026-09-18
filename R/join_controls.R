@@ -22,7 +22,9 @@ join_controls <- function(data, controls){
     )
   }
 
-  final_data_with_controls <- purrr::reduce(controls, dplyr::left_join, by = c("Year", "State", "LGA"), .init = data)
+  cols_to_left_join <- intersect(colnames(data), c("Year", "State", "LGA"))
+
+  final_data_with_controls <- purrr::reduce(controls, dplyr::left_join, by = cols_to_left_join, .init = data)
 
   return(final_data_with_controls)
 }
