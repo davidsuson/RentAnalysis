@@ -7,7 +7,7 @@
 #' @export
 create_keys <- function() {
 
-  missing_rent_data_demographic_names <- c(
+  missing_rent_data_income_names <- c(
     "Ku-Ring-Gai",
     "Gundagai",
     "Western Plains Regional",
@@ -25,7 +25,7 @@ create_keys <- function() {
     "Mallala"
   )
 
-  matching_LGA_demo_names <- c(
+  matching_LGA_income_names <- c(
     "Ku-ring-gai",
     "Cootamundra-Gundagai Regional",
     "Dubbo Regional",
@@ -44,7 +44,7 @@ create_keys <- function() {
   )
 
   lga_name_mapping <- tibble::tibble(
-    missing_rent_data_demographic_names,
+    missing_rent_data_income_names,
     matching_LGA_demo_names
   )
 
