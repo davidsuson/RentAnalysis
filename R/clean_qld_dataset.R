@@ -27,11 +27,11 @@ clean_qld_dataset <- function(raw_sheet_path) {
   names(cleaned_sheets) <- sheet_names
   join_columns = c("Dwelling","Bedrooms","Quarter","Year", "LGA")
 
-  combined_lga <- cleaned_sheets[["7 lga-rents"]] %>%
+  combined_lga <- cleaned_sheets[["7 lga-rents"]] |>
     dplyr::left_join(dplyr::select(cleaned_sheets[["8 lga-new-bonds"]], all_of(c("New_Bonds",join_columns))),
                      by = join_columns)
 
-  combined_qld <- cleaned_sheets[["10 qld-rents"]] %>%
+  combined_qld <- cleaned_sheets[["10 qld-rents"]] |>
     dplyr::left_join(dplyr::select(cleaned_sheets[["11 qld-new-bonds"]], all_of(c("New_Bonds",join_columns))),
                      by = join_columns)
 
@@ -106,8 +106,8 @@ clean_qld_sheet <- function(raw_sheet, sheet_name) {
         Quarter == "Sep" ~ as.Date(paste0(Year, "-09-30")),
         Quarter == "Dec" ~ as.Date(paste0(Year, "-12-31"))
       ),
-      Dwelling = case_match(Dwelling, "All" ~ "All Properties", .default = Dwelling),
-      Bedrooms = case_match(Bedrooms, "dwellings" ~ "All Sizes", .default = Bedrooms),
+      Dwelling = dplyr::recode_values(Dwelling, "All" ~ "All Properties", default = Dwelling),
+      Bedrooms = dplyr::recode_values(Bedrooms, "dwellings" ~ "All Sizes", default = Bedrooms),
       State = "QLD"
     ) |>
     dplyr::mutate(
