@@ -1,10 +1,10 @@
-#' clean_LGA_personal_income_statistics
+#' clean_personal_income_statistics
 #'
 #' @param file_path File path to income,earners by geography.xlsx
 #'
 #' @returns Cleaned Table 1.5 of the file, i.e. earner demographics split by LGA
 #' @export
-clean_LGA_personal_income_statistics <- function(file_path) {
+clean_personal_income_statistics <- function(file_path) {
   LGA_data <- readxl::read_xlsx(
     file_path,
     sheet = "Table 1.5",

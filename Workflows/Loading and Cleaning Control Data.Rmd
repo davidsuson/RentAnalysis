@@ -23,3 +23,9 @@ rent_data <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnal
                                sheet = "LGA")
 
 ```
+
+# Cleaning LGA demographic data
+
+```{r}
+personal_income_statistics <- clean_personal_income_statistics("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/controls/income,earners by geography.xlsx")
+```
