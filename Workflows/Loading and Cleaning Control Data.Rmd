@@ -24,8 +24,11 @@ rent_data <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnal
 
 ```
 
-# Cleaning LGA demographic data
+# Cleaning income and demographic data
 
 ```{r}
 personal_income_statistics <- clean_personal_income_statistics("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/controls/income,earners by geography.xlsx")
+
+demographic_statistics <- clean_demographic_statistics("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/controls/age and sex demographics.xlsx")
+
 ```

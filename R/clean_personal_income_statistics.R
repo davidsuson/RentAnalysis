@@ -68,8 +68,8 @@ clean_personal_income_statistics <- function(file_path) {
       Measure = dplyr::replace_values(
         Measure,
         "Earners" ~ "Num_Earners",
-        "Median age of earners" ~ "Median Age",
-        "Median" ~ "Median Income"
+        "Median age of earners" ~ "Median_Age",
+        "Median" ~ "Median_Income"
       ),
       Year = as.numeric(stringr::str_extract(Year, "^\\d{4}"))
     )
