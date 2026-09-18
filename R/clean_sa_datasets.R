@@ -26,8 +26,7 @@ clean_sa_datasets <- function(folder_path) {
     return(cleaned_sheet)
   })
 
-  cleaned_data <- dplyr::bind_rows(cleaned_sheets) |>
-    dplyr::filter(LGA != "Unknown")
+  cleaned_data <- dplyr::bind_rows(cleaned_sheets)
 
   return(cleaned_data)
 
@@ -86,7 +85,7 @@ clean_pre_2020_Q3_sa_sheet <- function(raw_sheet, file_name) {
     ))))
   raw_data <- raw_sheet[-(1:(row_to_load_past)), ]
   headers <- unlist(raw_data[1, ])
-  filled_headers <- na.locf(headers, na.rm = FALSE)
+  filled_headers <- zoo::na.locf(headers, na.rm = FALSE)
   raw_data[1, ] <- as.list(filled_headers)
 
 
@@ -112,13 +111,13 @@ clean_pre_2020_Q3_sa_sheet <- function(raw_sheet, file_name) {
     tidyr::pivot_longer(all_of(cols_to_pivot),
                         names_to = "Measure",
                         values_to = "Values") |>
-    mutate(
-      Values = recode(Values, "*" = "5", "n.a." = NA_character_),
+    dplyr::mutate(
+      Values = dplyr::replace_values(Values, "*" ~ "5", "n.a." ~ NA_character_),
       LGA = trimws(gsub("\\s*\\([^)]*\\)", "", LGA)),
       Measure = gsub("BR", "", Measure),
       Measure = trimws(gsub("\\s+", " ", Measure))
     ) |>
-    filter(!grepl("unknown", Measure, ignore.case = TRUE))
+    dplyr::filter(!grepl("unknown", Measure, ignore.case = TRUE))
 
   # * only shows up for counts. Where there are 1 to 5 dwellings, the number is replaced with "*"
 
@@ -133,14 +132,14 @@ clean_pre_2020_Q3_sa_sheet <- function(raw_sheet, file_name) {
       too_few = "align_start"
     ) |>
     dplyr::mutate(
-      Dwelling = recode(
+      Dwelling = dplyr::replace_values(
         Dwelling,
-        "Houses" = "House",
-        "Flats" = "Flat",
-        .missing = "All Properties"
+        "Houses"~ "House",
+        "Flats" ~ "Flat",
+         NA ~ "All Properties"
       ),
-      Bedrooms = recode(Bedrooms, "4+" = "4", "Total" = "All Sizes"),
-      Measure = recode(Measure, "Median" = "Median_Rent", "Count" = "New_Bonds"),
+      Bedrooms = dplyr::replace_values(Bedrooms, "4+" ~ "4", "Total" ~ "All Sizes"),
+      Measure = dplyr::replace_values(Measure, "Median" ~ "Median_Rent", "Count" ~ "New_Bonds"),
       Region = ifelse(LGA == "South Australia", LGA, NA),
       LGA = ifelse(LGA == "South Australia", "Table Total", LGA)
     ) |>
@@ -203,14 +202,14 @@ clean_post_2020_Q3_sa_sheet <- function(raw_sheet, file_name) {
   }
 
   headers <- unlist(raw_data[1, ])
-  filled_headers <- na.locf(headers, na.rm = FALSE)
+  filled_headers <- zoo::na.locf(headers, na.rm = FALSE)
   raw_data[1, ] <- as.list(filled_headers)
   is_count  <- grepl("count", filled_headers, ignore.case = TRUE)
   is_median <- grepl("median", filled_headers, ignore.case = TRUE)
   target_col <- is_count | is_median
 
   raw_data[2, target_col] <- "All Sizes"
-  filled_bedroom_sizes <- na.locf(unlist(raw_data[2, ]), na.rm = FALSE)
+  filled_bedroom_sizes <- zoo::na.locf(unlist(raw_data[2, ]), na.rm = FALSE)
   raw_data[2, ] <- as.list(filled_bedroom_sizes)
 
   is_na <- is.na(raw_data[3, ])
@@ -237,7 +236,7 @@ clean_post_2020_Q3_sa_sheet <- function(raw_sheet, file_name) {
     dplyr::mutate(LGA = trimws(gsub("\\s*\\([^)]*\\)", "", LGA))) |>
     dplyr::filter(grepl("Total", LGA)) |>
     dplyr::mutate(
-      LGA = recode(LGA, "Grand Total" = "South Australia"),
+      LGA = dplyr::replace_values(LGA, "Grand Total" ~ "South Australia"),
       LGA = trimws(gsub("Total", "", LGA)),
       Region = ifelse(LGA == "South Australia", LGA, NA),
       LGA = ifelse(LGA == "South Australia", "Table Total", LGA)
@@ -253,15 +252,15 @@ clean_post_2020_Q3_sa_sheet <- function(raw_sheet, file_name) {
                                 names = c("Dwelling", "Bedrooms", "Measure")) |>
     dplyr::mutate(
       Bedrooms = trimws(gsub("Bedrooms|Bedroom", "", Bedrooms)),
-      Dwelling = recode(
+      Dwelling = dplyr::replace_values(
         Dwelling,
-        "Flats/Units" = "Flat",
-        "Houses" = "House",
-        "Total" = "All Properties"
+        "Flats/Units" ~ "Flat",
+        "Houses" ~ "House",
+        "Total" ~ "All Properties"
       ),
-      Bedrooms = recode(Bedrooms, "4+" = "4"),
-      Values = recode(Values, "*" = "5"),
-      Measure = recode(Measure, "Median" = "Median_Rent", "Count" = "New_Bonds")
+      Bedrooms = dplyr::replace_values(Bedrooms, "4+" ~ "4"),
+      Values = dplyr::replace_values(Values, "*" ~ "5"),
+      Measure = dplyr::replace_values(Measure, "Median" ~ "Median_Rent", "Count" ~ "New_Bonds")
     ) |>
     tidyr::pivot_wider(names_from = "Measure", values_from = "Values") |>
     dplyr::mutate(

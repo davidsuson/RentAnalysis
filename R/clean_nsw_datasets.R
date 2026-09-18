@@ -101,16 +101,16 @@ clean_nsw_sheet <- function(raw_sheet, file_name) {
       )
     ) |>
     dplyr::mutate(
-      Bedrooms = dplyr::recode(
+      Bedrooms = dplyr::recode_values(
         Bedrooms,
-        "Total" = "All Sizes",
-        "1 Bedroom" = "1",
-        "2 Bedrooms" = "2",
-        "3 Bedrooms" = "3",
-        "4 or more Bedrooms" = "4"
+        "Total" ~ "All Sizes",
+        "1 Bedroom" ~ "1",
+        "2 Bedrooms" ~ "2",
+        "3 Bedrooms" ~ "3",
+        "4 or more Bedrooms" ~ "4"
       ),
-      Dwelling = dplyr::recode(Dwelling, "Total" = "All Properties", "Flat/Unit" = "Flat"),
-      Region = dplyr::recode(Region, "Total" = "New South Wales"),
+      Dwelling = dplyr::replace_values(Dwelling, "Total" ~ "All Properties", "Flat/Unit" ~ "Flat"),
+      Region = dplyr::replace_values(Region, "Total" ~ "New South Wales"),
       LGA = dplyr::case_when(
         Region == "New South Wales" & LGA == "Total" ~ "Table Total",
         Region != "New South Wales" &
