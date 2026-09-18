@@ -15,5 +15,5 @@ This just due to different names for the same LGA. This function lists the names
 that are not present in income,earners by geography.xlsx.
 }
 \details{
-It then lists, the equivalent names in income,earners by geography.xlsx in the vector matching_LGA_income_names
+It then lists, the equivalent names in income,earners by geography.xlsx in the vector matching_LGA_name_in_income_table
 }

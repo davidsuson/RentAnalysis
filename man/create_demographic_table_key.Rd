@@ -15,5 +15,5 @@ This just due to different names for the same LGA. This function lists the names
 that are not present in age and sex demographics.xlsx.
 }
 \details{
-It then lists, the equivalent names in age and sex demographics.xlsx in the vector matching_LGA_demo_names
+It then lists, the equivalent names in age and sex demographics.xlsx in the vector matching_LGA_name_in_demo_table
 }

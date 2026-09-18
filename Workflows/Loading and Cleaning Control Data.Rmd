@@ -18,7 +18,7 @@ devtools::load_all()
 # Loading data
 
 ```{r}
-rent_data <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_no_controls.xlsx",
+rent_LGA_data <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_no_controls.xlsx",
                                sheet = "LGA") |>
   dplyr::mutate(
     LGA = dplyr::replace_values(LGA, 
@@ -38,6 +38,10 @@ rent_data <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnal
                                 "Mallala" ~ "Adelaide Plains"
                                 ) 
   )
+
+rent_state_data <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_no_controls.xlsx",
+                               sheet = "State") |>
+  dplyr::mutate(LGA = State) # This is for the join 
 ```
 
 The datset is inconsistent for 2018 Q1, Q2 for select LGAs. They called:
@@ -64,7 +68,7 @@ personal_income_statistics <- clean_personal_income_statistics("C:/Users/David/D
 demographic_statistics <- clean_demographic_statistics("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/controls/age and sex demographics.xlsx")
 ```
 
-# Joining data and exporting 
+# Cleaning up LGA names 
 
 As the datasets refer to the some of the LGAs differently, have to standardise names.
 
@@ -90,6 +94,7 @@ personal_income_statistics  <- personal_income_statistics   |>
   )  
 ```
 
+# Joining and saving data
 
 ```{r}
 controls <- list(
@@ -97,6 +102,14 @@ controls <- list(
   demographic_statistics
 )
 
-final_data_with_controls <- join_controls(rent_data, controls)
+final_LGA_data_with_controls <- join_controls(rent_LGA_data, controls)
+final_state_data_with_controls <- join_controls(rent_state_data, controls)
+
+excel_sheet <- list(
+  LGA = final_LGA_data_with_controls,
+  State = final_state_data_with_controls
+)
+
+writexl::write_xlsx(excel_sheet, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_with_controls.xlsx")
 
 ```
