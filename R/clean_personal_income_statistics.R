@@ -30,6 +30,8 @@ clean_LGA_personal_income_statistics <- function(file_path) {
   colnames(LGA_data) <- c(LGA_data[2, 1:2], combined_headers)
   LGA_data <- LGA_data[-c(1:2), ]
 
+
+
   cleaned_LGA_data <- LGA_data |>
     dplyr::rename(State = LGA, LGA = "LGA NAME") |>
     dplyr::mutate(
@@ -42,12 +44,14 @@ clean_LGA_personal_income_statistics <- function(file_path) {
         "Western Australia" ~ "WA",
         "Tasmania" ~ "TAS",
         "Northern Territory" ~ "NT",
-        "Australian Capital Territory" ~ "ACT"
+        "Australian Capital Territory" ~ "ACT",
+        "Australia" ~ "AUS"
       ),
       State = sub("^[0-9]+$", NA_character_, State)
     ) |>
     tidyr::fill(State, .direction = "down") |>
-    dplyr::mutate(LGA = dplyr::coalesce(LGA, State))
+    dplyr::mutate(LGA = dplyr::coalesce(LGA, State)) |>
+    dplyr::filter(State %in% c("VIC", "QLD", "NSW", "SA"))
 
 
   cols_to_pivot <- colnames(cleaned_LGA_data)[!colnames(cleaned_LGA_data) %in% c("State", "LGA")]
