@@ -64,7 +64,7 @@ personal_income_statistics <- clean_personal_income_statistics("C:/Users/David/D
 
 demographic_statistics <- clean_demographic_statistics("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/controls/age and sex demographics.xlsx")
 
-test <- setdiff(rent_data$LGA, personal_income_statistics$LGA)
+test <- setdiff(rent_data$LGA, demographic_statistics$LGA)
 ```
 
 # Joining data and exporting 
@@ -72,15 +72,16 @@ test <- setdiff(rent_data$LGA, personal_income_statistics$LGA)
 
 keys <- create_keys()
 
-personal_income_statistics <- personal_income_statistics  |>
+demographic_statistics <- demographic_statistics  |>
   dplyr::mutate(
     LGA = dplyr::replace_values(
       LGA,
-      from = keys$income$matching_LGA_name_in_income_table,
-      to = keys$income$rent_data_LGA_name_with_no_match
+      from = keys$demo$matching_LGA_name_in_demo_table,
+      to = keys$demo$rent_data_LGA_name_with_no_match
     )
   )  
-test <- setdiff(rent_data$LGA, personal_income_statistics$LGA)
+
+test <- setdiff(rent_data$LGA, demographic_statistics$LGA)
 ```
 
 

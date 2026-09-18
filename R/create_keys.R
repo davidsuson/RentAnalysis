@@ -8,10 +8,11 @@
 create_keys <- function() {
 
   income_LGA_name_key <- create_income_table_key()
+  demo_LGA_name_key <- create_demographic_table_key()
 
   keys <- list(
     income = income_LGA_name_key,
-    demo = NULL
+    demo = demo_LGA_name_key
   )
 
   return(keys)
@@ -65,10 +66,56 @@ create_demographic_table_key <- function(){
 
   rent_data_LGA_name_with_no_match <- c(
     "Ku-Ring-Gai",
+    "Armidale Regional",
+    "Gundagai",
+    "Western Plains Regional",
+    "Mid-Western Regional",
+    "Nambucca",
+    "Sutherland Shire",
+    "The Hills Shire",
+    "Bathurst Regional",
+    "Greater Hume Shire",
+    "Queanbeyan-Palerang Regional",
+    "Snowy Monaro Regional",
+    "Tamworth Regional",
+    "Upper Hunter Shire",
+    "Upper Lachlan Shire",
+    "Warrumbungle Shire",
+    "Colac-Otway",
+    "Berri and Barmera",
+    "Lower Eyre Peninsula",
+    "Naracoorte and Lucindale",
+    "Norwood Payneham St Peters",
+    "Port Pirie City and Dists",
+    "The Coorong",
+    "Orroroo/Carrieton"
   )
 
   matching_LGA_name_in_demo_table <- c(
     "Ku-ring-gai",
+    "Armidale",
+    "Cootamundra-Gundagai",
+    "Dubbo",
+    "Mid-Western",
+    "Nambucca Valley",
+    "Sutherland",
+    "The Hills",
+    "Bathurst",
+    "Greater Hume Regional",
+    "Queanbeyan-Palerang",
+    "Snowy Monaro",
+    "Tamworth",
+    "Upper Hunter",
+    "Upper Lachlan",
+    "Warrumbungle",
+    "Colac Otway",
+    "Berri Barmera",
+    "Lower Eyre",
+    "Naracoorte Lucindale",
+    "Norwood Payneham and St Peters",
+    "Port Pirie",
+    "Coorong",
+    "Orroroo Carrieton"
   )
 
   demo_LGA_name_key <- tibble::tibble(
