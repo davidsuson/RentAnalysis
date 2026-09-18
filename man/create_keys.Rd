@@ -7,7 +7,7 @@
 create_keys()
 }
 \value{
-A dataframe
+A list of data-frames mapping missing LGA names from the rent dataset to the LGA names in the control tables
 }
 \description{
 creates a mapping key for income earners,by geography Table 1.5 LGA names to LGA names in combined_dataset_no_controls.xlsx.

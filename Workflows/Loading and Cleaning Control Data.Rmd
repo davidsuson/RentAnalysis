@@ -19,16 +19,79 @@ devtools::load_all()
 
 ```{r}
 
-rent_data <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_no_controls.xlsx",
-                               sheet = "LGA")
 
+rent_data <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_no_controls.xlsx",
+                               sheet = "LGA") |>
+  dplyr::mutate(
+    LGA = dplyr::replace_values(LGA, 
+                                "Sydney City" ~ "Sydney", 
+                                "Cootamundra-Gundagai Regional" ~ "Gundagai", 
+                                "Sutherland" ~ "Sutherland Shire",
+                                "The Hills" ~ "The Hills Shire",
+                                "Bathurst" ~ "Bathurst Regional",
+                                "Dubbo Regional" ~ "Western Plains Regional",
+                                "Glen Innes" ~ "Glen Innes Severn",
+                                "Greater Hume" ~ "Greater Hume Shire",
+                                "Tamworth" ~ "Tamworth Regional",
+                                "Upper Hunter" ~ "Upper Hunter Shire",
+                                "Upper Lachlan" ~ "Upper Lachlan Shire",
+                                "Warrumbungle" ~ "Warrumbungle Shire",
+                                "Mornington Penin'a" ~ "Mornington Peninsula",
+                                "Mallala" ~ "Adelaide Plains"
+                                ) 
+  )
 ```
 
+They called:
+1. Sydney, Sydney City in 2018 Q1, Q2
+2. Gundagai, Cootamundra-Gundagai Regional in 2018 Q1, Q2
+3. Sutherland Shire, Sutherland in 2018 Q1, Q2
+4. The Hills Shire, The Hills in 2018 Q1, Q2
+5. Bathurst Regional, Bathurst in 2018 Q1, Q2
+6. Western Plains Regional, Dubbo Regional in 2018 Q1, Q2
+7. Glen Innes Severn, Glen Innes in 2018 Q1, Q2
+8. Greater Hume Shire, Greater Hume in 2018 Q1, Q2
+9. Tamworth Regional, Tamworth in 2018 Q1, Q2
+10. Upper Hunter Shire, Upper Hunter in 2018 Q1, Q2
+11. Upper Lachlan Shire, Upper Lachlan in 2018 Q1, Q2
+12. Warrambungle Shire, Warrambungle in 2018 Q1, Q2
+13. Mornington Peninsula, Morningtong Penin'a throughout the entire dataset.
+14. Adelaide Plains, Mallala in 2018 Q1, Q2
 # Cleaning income and demographic data
 
 ```{r}
 personal_income_statistics <- clean_personal_income_statistics("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/controls/income,earners by geography.xlsx")
 
 demographic_statistics <- clean_demographic_statistics("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/controls/age and sex demographics.xlsx")
+
+test <- setdiff(rent_data$LGA, personal_income_statistics$LGA)
+```
+
+# Joining data and exporting 
+```{r}
+
+keys <- create_keys()
+
+personal_income_statistics <- personal_income_statistics  |>
+  dplyr::mutate(
+    LGA = dplyr::replace_values(
+      LGA,
+      from = keys$income$matching_LGA_name_in_income_table,
+      to = keys$income$rent_data_LGA_name_with_no_match
+    )
+  )  
+test <- setdiff(rent_data$LGA, personal_income_statistics$LGA)
+```
+
+
+```{r}
+controls <- list(
+  personal_income_statistics,
+  demographic_statistics
+)
+
+test <- setdiff(rent_data$LGA, personal_income_statistics$LGA)
+
+final_data_with_controls <- join_controls(rent_data, controls)
 
 ```
