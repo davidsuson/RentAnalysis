@@ -106,8 +106,8 @@ clean_qld_sheet <- function(raw_sheet, sheet_name) {
         Quarter == "Sep" ~ as.Date(paste0(Year, "-09-30")),
         Quarter == "Dec" ~ as.Date(paste0(Year, "-12-31"))
       ),
-      Dwelling = dplyr::recode_values(Dwelling, "All" ~ "All Properties", default = Dwelling),
-      Bedrooms = dplyr::recode_values(Bedrooms, "dwellings" ~ "All Sizes", default = Bedrooms),
+      Dwelling = dplyr::replace_values(Dwelling, "All" ~ "All Properties"),
+      Bedrooms = dplyr::replace_values(Bedrooms, "dwellings" ~ "All Sizes"),
       State = "QLD"
     ) |>
     dplyr::mutate(
