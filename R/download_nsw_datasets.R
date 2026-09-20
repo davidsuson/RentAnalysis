@@ -11,8 +11,8 @@ download_nsw_datasets <- function(file_path) {
   page <- rvest::read_html(url)
 
   # look for html elements which have a hyperlink
-  links <- page %>%
-    rvest::html_elements("a") %>%
+  links <- page |>
+    rvest::html_elements("a") |>
     rvest::html_attr("href")
 
   # clean links so can look for links which says rent tables
