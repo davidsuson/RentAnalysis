@@ -2,18 +2,20 @@
 % Please edit documentation in R/plot_rent_and_new_bonds.R
 \name{plot_bond}
 \alias{plot_bond}
-\title{plot_bonds}
+\title{plot_bond}
 \usage{
 plot_bond(data, palette)
 }
 \arguments{
-\item{data}{Data to plot.}
+\item{data}{A data frame. Must contain \code{Quarter_Start_Date}, \code{New_Bonds}
+and \code{State}.}
 
-\item{palette}{Named vector. Maps each state to a color.}
+\item{palette}{A named character vector. Maps each state to a colour.}
 }
 \value{
-New bonds lodged plotted by quarter start date and grouped by state.
+A ggplot object.
 }
 \description{
-plot_bonds
+Plots the number of new bonds lodged over time, with one line per state.
+The y-axis labels are shown in thousands.
 }

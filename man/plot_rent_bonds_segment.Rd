@@ -7,23 +7,27 @@
 plot_rent_bonds_segment(data, treated, subset_details, palette)
 }
 \arguments{
-\item{data}{A data frame. Contains the data to subset.}
+\item{data}{A data frame. The full data to subset.}
 
-\item{treated}{A string. The treated state to plot.}
+\item{treated}{A string. The treated state, plotted in every chart.}
 
-\item{subset_details}{A dataframe. Contains the details to filter the data by. Should have the columns:
-\enumerate{
-\item Control. A string. The control state to plot.
-\item Dwelling. A string. The dwelling type to subset the data by.
-\item Bedroom. A string. The number of bedrooms to subset the data by.
-}}
+\item{subset_details}{A data frame with one row per control state, and
+the columns:
+\itemize{
+\item \code{dwelling}: string. The dwelling type to filter by.
+\item \code{bedroom}: string. The number of bedrooms to filter by.
+\item \code{control}: string. The control state to plot against \code{treated}.
+}
+All rows must share the same \code{dwelling} and \code{bedroom}.}
 
-\item{palette}{Named vector. Maps each state to a color.}
+\item{palette}{A named character vector. Maps each state to a colour.}
 }
 \value{
-Plots of median weekly rent and control by dwelling and bedroom with the treated and control states on the same plot.
+A patchwork figure for the given dwelling/bedroom combination. on the same plot.
 }
 \description{
-For each row of \code{subset_details}, plots median weekly rent and new bonds for the
-treated state against that row's control state.
+Builds the figure for one dwelling/bedroom combination. For each control
+state in \code{subset_details}, plots median weekly rent and new bonds for the
+treated state against that control, then arranges all the charts into one
+figure with a shared legend.
 }

@@ -7,13 +7,14 @@
 plot_rent(data, palette)
 }
 \arguments{
-\item{data}{Data to plot.}
+\item{data}{A data frame. Must contain \code{Quarter_Start_Date},
+\code{Median_Rent} and \code{State}.}
 
-\item{palette}{Named vector. Maps each state to a color.}
+\item{palette}{A named character vector. Maps each state to a colour.}
 }
 \value{
-Median weekly rent plotted by quarter start date and grouped by state.
+A ggplot object.
 }
 \description{
-plot_rent
+Plots median weekly rent over time, with one line per state.
 }
