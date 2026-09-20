@@ -20,7 +20,18 @@ This will compare median rent and new bonds lodged for all of VIC and NSW across
 5.  4 bedroom
 
 ```{r}
+state_plots <- plot_rent_and_new_bonds(data, treated = c("VIC"), controls = c("NSW", "QLD", "SA"))
 
-test <- plot_rent_and_new_bonds(data, treated = c("VIC"), controls = c("NSW", "QLD", "SA"))
+purrr::iwalk(state_plots, function(plot, name) {
+  file_name <- gsub("[^A-Za-z0-9]+", "_", name)
+
+  ggplot2::ggsave(
+    filename = file.path("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Exhibits/Plots/", paste0(file_name, ".png")),
+    plot = plot,
+    width = 10,
+    height = 12,
+    dpi = 300
+  )
+})
 ```
 
