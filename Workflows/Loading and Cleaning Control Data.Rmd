@@ -102,8 +102,10 @@ controls <- list(
   demographic_statistics
 )
 
-final_LGA_data_with_controls <- join_controls(rent_LGA_data, controls)
-final_state_data_with_controls <- join_controls(rent_state_data, controls)
+final_LGA_data_with_controls <- join_controls(rent_LGA_data, controls) |>
+  dplyr::filter(Year <= 2022) # Only have control data for number of earners until 2022-23
+final_state_data_with_controls <- join_controls(rent_state_data, controls) |>
+  dplyr::filter(Year <= 2022) # Only have control data for number of earners until 2022-23
 
 excel_sheet <- list(
   LGA = final_LGA_data_with_controls,
