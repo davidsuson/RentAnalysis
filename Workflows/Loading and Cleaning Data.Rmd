@@ -115,7 +115,7 @@ filtered_combined_dataset <- combined_dataset |>
                 Year >= 2018,
                 (Dwelling == "Flat" & Bedrooms %in% c(1, 2, 3)) |
                 (Dwelling == "House" & Bedrooms %in% c(2, 3, 4)) |
-                (Dwelling == "All Properties" & Bedrooms == "All Size")
+                (Dwelling == "All Properties" & Bedrooms == "All Sizes")
                 )
 
 state_observations <- filtered_combined_dataset |>
