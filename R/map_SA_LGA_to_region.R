@@ -51,7 +51,7 @@ map_SA_LGA_to_region <- function(data){
                  "Roxby Downs", "Streaky Bay", "Tumby Bay", "Whyalla",
                  "Wudinna") ~ "South Australia - Outback",
 
-      LGA %in% c("Unincorporated SA") ~ "Unincorporated SA",
+      LGA == "Unincorporated SA" ~ "Unincorporated SA",
 
       TRUE ~ Region
     ))

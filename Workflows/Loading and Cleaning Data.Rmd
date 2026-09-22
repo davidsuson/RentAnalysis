@@ -82,7 +82,8 @@ writexl::write_xlsx(cleaned_nsw_dataset, "C:/Users/David/Desktop/MicroEcon - Ren
 
 # Map these to ABS SA4 Regions manually as dataset doesn't contain a region column
 
-cleaned_qld_dataset <- clean_qld_dataset("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/qld/rta-bond-statistics.xlsx")
+cleaned_qld_dataset <- clean_qld_dataset("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/qld/rta-bond-statistics.xlsx") |>
+  map_QLD_LGA_to_region()
 
 writexl::write_xlsx(cleaned_qld_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/cleaned_qld_dataset.xlsx")
 
