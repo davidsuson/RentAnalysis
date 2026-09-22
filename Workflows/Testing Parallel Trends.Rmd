@@ -1,0 +1,59 @@
+---
+title: "Testing Parallel Trends"
+output: html_document
+---
+
+```{r}
+state_data <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_with_controls.xlsx", sheet = "State")
+LGA_data  <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_with_controls.xlsx", sheet = "LGA")
+```
+
+# State level check
+
+```{r}
+
+state_no_controls_data <- state_data |>
+  dplyr::select(c("Dwelling", "Bedrooms", "Median_Rent", "State", "Year", "Quarter"))
+
+state_no_controls_regressions <- test_parallel_trends(state_no_controls_data,
+                               treated = "VIC",
+                               controls = c("SA", "QLD", "NSW"),
+                               treatment_time = c(2021, 1),
+                               bin_width = 4,
+                               baseline_quarter = -1,
+                               unit = "State")
+```
+
+There isn't enough observations to estimate all the control buckets.
+
+
+# LGA level check
+
+```{r}
+
+LGA_no_controls_data <- LGA_data |>
+  dplyr::select(c("Dwelling", "Bedrooms", "Median_Rent", "State", "LGA", "Region", "Year", "Quarter"))
+
+LGA_no_controls_regressions <- test_parallel_trends(LGA_no_controls_data,
+                               treated = "VIC",
+                               controls = c("SA", "QLD", "NSW"),
+                               treatment_time = c(2021, 1),
+                               bin_width = 4,
+                               baseline_quarter = -1,
+                               unit = "LGA")
+
+```
+
+```{r}
+LGA_controls_data <- LGA_data |>
+  dplyr::select(-c("New_Bonds", "Quarter_Start_Date", "Quarter_End_Date", "M 0–4", "F 0–4"))
+
+LGA_controls_regressions <- test_parallel_trends(LGA_controls_data,
+                             treated = "VIC",
+                             controls = c("SA", "QLD", "NSW"),
+                             treatment_time = c(2021, 1),
+                             bin_width = 6,
+                             baseline_quarter = -1,
+                             unit = "LGA")
+
+```
