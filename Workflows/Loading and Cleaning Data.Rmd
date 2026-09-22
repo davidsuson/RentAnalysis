@@ -80,6 +80,8 @@ writexl::write_xlsx(cleaned_nsw_dataset, "C:/Users/David/Desktop/MicroEcon - Ren
 
 ```{r}
 
+# Map these to ABS SA4 Regions manually as dataset doesn't contain a region column
+
 cleaned_qld_dataset <- clean_qld_dataset("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/qld/rta-bond-statistics.xlsx")
 
 writexl::write_xlsx(cleaned_qld_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/cleaned_qld_dataset.xlsx")
@@ -90,7 +92,10 @@ writexl::write_xlsx(cleaned_qld_dataset, "C:/Users/David/Desktop/MicroEcon - Ren
 
 ```{r}
 
-cleaned_sa_dataset <- clean_sa_datasets("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/sa")
+# Map these to ABS SA4 Regions manually as dataset doesn't contain a region column
+
+cleaned_sa_dataset <- clean_sa_datasets("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/sa") |>
+  map_SA_LGA_to_region()
 
 writexl::write_xlsx(cleaned_sa_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/cleaned_sa_dataset.xlsx")
 
@@ -128,8 +133,7 @@ region_observations <- filtered_combined_dataset |>
 
 LGA_observations <- filtered_combined_dataset |>
   dplyr::filter(LGA != "Group Total",
-                LGA != "Table Total") |>
-  dplyr::select(-Region)
+                LGA != "Table Total")
 
 excel_file <- list(
   "State" = state_observations,
