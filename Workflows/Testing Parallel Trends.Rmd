@@ -19,7 +19,7 @@ state_no_controls_regressions <- test_parallel_trends(state_no_controls_data,
                                treated = "VIC",
                                controls = c("SA", "QLD", "NSW"),
                                treatment_time = c(2021, 1),
-                               bin_width = 4,
+                               bin_width = 7,
                                baseline_quarter = -1,
                                unit = "State")
 ```
@@ -38,7 +38,7 @@ LGA_no_controls_regressions <- test_parallel_trends(LGA_no_controls_data,
                                treated = "VIC",
                                controls = c("SA", "QLD", "NSW"),
                                treatment_time = c(2021, 1),
-                               bin_width = 4,
+                               bin_width = 7,
                                baseline_quarter = -1,
                                unit = "LGA")
 
@@ -52,7 +52,7 @@ LGA_controls_regressions <- test_parallel_trends(LGA_controls_data,
                              treated = "VIC",
                              controls = c("SA", "QLD", "NSW"),
                              treatment_time = c(2021, 1),
-                             bin_width = 6,
+                             bin_width = 7,
                              baseline_quarter = -1,
                              unit = "LGA")
 

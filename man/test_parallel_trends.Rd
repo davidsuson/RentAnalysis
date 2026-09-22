@@ -33,8 +33,7 @@ date as \code{c(year, quarter)}. Defaults to \code{c(2021, 1)}.}
 \item{bin_width}{Integer giving the number of quarters to keep as
 individual leads/lags around treatment before pooling the rest into
 endpoint bins. \code{Relative_Time} is capped at \code{+bin_width} and
-\code{-bin_width}, so periods beyond that are grouped into a single
-"bin_width or more" category on each side. Defaults to \code{4}.}
+\code{-bin_width}, where the end points represent bin_width or more. Defaults to \code{4}.}
 
 \item{baseline_quarter}{The relative-time value used as the omitted reference
 period in the event-study specification (passed to \code{ref} in

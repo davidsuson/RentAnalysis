@@ -19,8 +19,7 @@
 #' @param bin_width Integer giving the number of quarters to keep as
 #'   individual leads/lags around treatment before pooling the rest into
 #'   endpoint bins. `Relative_Time` is capped at `+bin_width` and
-#'   `-bin_width`, so periods beyond that are grouped into a single
-#'   "bin_width or more" category on each side. Defaults to `4`.
+#'   `-bin_width`, where the end points represent bin_width or more. Defaults to `4`.
 #' @param baseline_quarter The relative-time value used as the omitted reference
 #'   period in the event-study specification (passed to `ref` in
 #'   `fixest::i()`). Defaults to `-1`, the quarter immediately preceding
