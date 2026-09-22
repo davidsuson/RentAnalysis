@@ -57,3 +57,22 @@ LGA_controls_regressions <- test_parallel_trends(LGA_controls_data,
                              unit = "LGA")
 
 ```
+
+# Export tables to LATEX
+
+```{r}
+
+all_regressions <- list(
+  state_no_controls_regressions,
+  LGA_no_controls_regressions,
+  LGA_controls_regressions
+)
+
+latex_tables <- lapply(all_regressions, function(regressions){
+  latex_table <- regressions |>
+    build_parallel_trends_table(alpha = 0.05,
+                                pre_threshold = -1) |>
+    render_parallel_trends_latex()
+})
+
+```
