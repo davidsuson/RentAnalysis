@@ -15,13 +15,23 @@ LGA_data  <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnal
 state_no_controls_data <- state_data |>
   dplyr::select(c("Dwelling", "Bedrooms", "Median_Rent", "State", "Year", "Quarter"))
 
-state_no_controls_regressions <- test_parallel_trends(state_no_controls_data,
+state_rent_no_controls_regressions <- test_parallel_trends(state_no_controls_data,
                                treated = "VIC",
                                controls = c("SA", "QLD", "NSW"),
                                treatment_time = c(2021, 1),
                                bin_width = 7,
                                baseline_quarter = -1,
-                               unit = "State")
+                               unit = "State",
+                               outcome = "Median_Rent")
+
+state_bonds_no_controls_regressions <- test_parallel_trends(state_no_controls_data,
+                               treated = "VIC",
+                               controls = c("SA", "QLD", "NSW"),
+                               treatment_time = c(2021, 1),
+                               bin_width = 7,
+                               baseline_quarter = -1,
+                               unit = "State",
+                               outcome = "New_Bonds")
 ```
 
 There isn't enough observations to estimate all the control buckets.
@@ -34,13 +44,23 @@ There isn't enough observations to estimate all the control buckets.
 LGA_no_controls_data <- LGA_data |>
   dplyr::select(c("Dwelling", "Bedrooms", "Median_Rent", "State", "LGA", "Region", "Year", "Quarter"))
 
-LGA_no_controls_regressions <- test_parallel_trends(LGA_no_controls_data,
+LGA_rent_no_controls_regressions <- test_parallel_trends(LGA_no_controls_data,
                                treated = "VIC",
                                controls = c("SA", "QLD", "NSW"),
                                treatment_time = c(2021, 1),
                                bin_width = 7,
                                baseline_quarter = -1,
-                               unit = "LGA")
+                               unit = "LGA",
+                               outcome = "Median_Rent")
+
+LGA_bonds_no_controls_regressions <- test_parallel_trends(LGA_no_controls_data,
+                               treated = "VIC",
+                               controls = c("SA", "QLD", "NSW"),
+                               treatment_time = c(2021, 1),
+                               bin_width = 7,
+                               baseline_quarter = -1,
+                               unit = "LGA",
+                               outcome = "New_Bonds")
 
 ```
 
@@ -48,13 +68,23 @@ LGA_no_controls_regressions <- test_parallel_trends(LGA_no_controls_data,
 LGA_controls_data <- LGA_data |>
   dplyr::select(-c("New_Bonds", "Quarter_Start_Date", "Quarter_End_Date", "M 0–4", "F 0–4"))
 
-LGA_controls_regressions <- test_parallel_trends(LGA_controls_data,
+LGA_rent_controls_regressions <- test_parallel_trends(LGA_controls_data,
                              treated = "VIC",
                              controls = c("SA", "QLD", "NSW"),
                              treatment_time = c(2021, 1),
                              bin_width = 7,
                              baseline_quarter = -1,
-                             unit = "LGA")
+                             unit = "LGA",
+                             outcome = "Median_Rent")
+
+LGA_bonds_controls_regressions <- test_parallel_trends(LGA_controls_data,
+                             treated = "VIC",
+                             controls = c("SA", "QLD", "NSW"),
+                             treatment_time = c(2021, 1),
+                             bin_width = 7,
+                             baseline_quarter = -1,
+                             unit = "LGA",
+                             outcome = "New_Bonds")
 
 ```
 
@@ -63,9 +93,12 @@ LGA_controls_regressions <- test_parallel_trends(LGA_controls_data,
 ```{r}
 
 all_regressions <- list(
-  state_no_controls_regressions,
-  LGA_no_controls_regressions,
-  LGA_controls_regressions
+  state_rent_no_controls_regressions,
+  LGA_rent_no_controls_regressions,
+  LGA_rent_controls_regressions,
+  state_bonds_no_controls_regressions,
+  LGA_bonds_no_controls_regressions,
+  LGA_bonds_controls_regressions
 )
 
 latex_tables <- lapply(all_regressions, function(regressions){

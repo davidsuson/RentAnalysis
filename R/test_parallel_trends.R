@@ -29,6 +29,8 @@
 #'   (`State + Quarter` vs. `LGA + Quarter`), the clustering/vcov used
 #'   (heteroskedasticity-robust for `"State"`, clustered by `Region` for
 #'   `"LGA"`), and which columns are treated as controls.
+#' @param outcome A character string giving the outcome variable, either `"New_Bonds"`
+#    or `"Median_Rent"`. Determines the outcome variable to be regressed.
 #'
 #' @return A named list of `fixest` model objects, one per
 #'   dwelling/bedroom/control combination. Each element is the fitted
@@ -44,7 +46,8 @@ test_parallel_trends <- function(data,
                                  treatment_time = c(2021, 1),
                                  bin_width = 4,
                                  baseline_quarter = -1,
-                                 unit) {
+                                 unit,
+                                 outcome) {
 
   subset_details <- data |>
     dplyr::filter(State != treated) |>
@@ -80,24 +83,24 @@ test_parallel_trends <- function(data,
       dplyr::select(-c("Dwelling", "Bedrooms"))
 
     if (unit == "State"){
-      non_controls <- c("Median_Rent", "Relative_Time_Binned", "Treated_Group", "State", "Quarter")
+      non_controls <- c("Median_Rent", "New_Bonds", "Relative_Time_Binned", "Treated_Group", "State", "Quarter")
       control_vars <- setdiff(names(segment_data), non_controls)
       control_vars <- paste0("`", control_vars, "`")
 
       regression <- fixest::feols(
-        fixest::xpd(Median_Rent ~ fixest::i(Relative_Time_Binned, Treated_Group, ref = baseline_quarter) + ..ctrl | State + Quarter,
+        fixest::xpd(rlang::sym(outcome) ~ fixest::i(Relative_Time_Binned, Treated_Group, ref = baseline_quarter) + ..ctrl | State + Quarter,
                     ..ctrl = control_vars),
         data = segment_data,
         vcov = "hetero"
       )
     } else if (unit == "LGA") {
 
-      non_controls <- c("Median_Rent", "Relative_Time_Binned", "Treated_Group", "LGA", "Quarter", "State", "Region")
+      non_controls <- c("Median_Rent", "New_Bonds", "Relative_Time_Binned", "Treated_Group", "LGA", "Quarter", "State", "Region")
       control_vars <- setdiff(names(segment_data), non_controls)
       control_vars <- paste0("`", control_vars, "`")
 
       regression <- fixest::feols(
-        fixest::xpd(Median_Rent ~ fixest::i(Relative_Time_Binned, Treated_Group, ref = baseline_quarter) + ..ctrl | LGA + Quarter,
+        fixest::xpd(rlang::sym(outcome) ~ fixest::i(Relative_Time_Binned, Treated_Group, ref = baseline_quarter) + ..ctrl | LGA + Quarter,
                     ..ctrl = control_vars),
         data = segment_data,
         cluster = ~Region
