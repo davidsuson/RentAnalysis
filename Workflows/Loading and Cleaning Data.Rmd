@@ -128,17 +128,12 @@ state_observations <- filtered_combined_dataset |>
   dplyr::filter(LGA == "Table Total") |>
   dplyr::select(-c(Region, LGA))
 
-region_observations <- filtered_combined_dataset |>
-  dplyr::filter(LGA == "Group Total") |>
-  dplyr::select(-LGA)
-
 LGA_observations <- filtered_combined_dataset |>
   dplyr::filter(LGA != "Group Total",
                 LGA != "Table Total")
 
 excel_file <- list(
   "State" = state_observations,
-  "Region" = region_observations,
   "LGA" = LGA_observations
 )
 
