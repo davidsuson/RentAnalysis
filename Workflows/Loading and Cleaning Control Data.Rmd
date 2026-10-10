@@ -103,10 +103,10 @@ controls <- list(
 )
 
 final_LGA_data_with_controls <- join_controls(rent_LGA_data, controls) |>
-  dplyr::filter(Year <= 2022) # Only have control data for number of earners until 2022-23
+  dplyr::filter(Year <= 2022 & Quarter <= 3) # Only have control data for number of earners until 2022-23. QLD rolled out rent bidding bans after 2024 Q3
 
 final_state_data_with_controls <- join_controls(rent_state_data, controls) |>
-  dplyr::filter(Year <= 2022) |> # Only have control data for number of earners until 2022-23
+  dplyr::filter(Year <= 2022 & Quarter <= 3) |> # Only have control data for number of earners until 2022-23. QLD rolled out rent bidding bans after 2024 Q3
   dplyr::select(-LGA) # Only needed for the join
 
 excel_sheet <- list(
