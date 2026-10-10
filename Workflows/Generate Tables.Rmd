@@ -1,0 +1,17 @@
+---
+title: "Generate Tables"
+output: html_document
+---
+
+# Data
+
+## Number of LGAs by State
+
+```{r}
+combined_dataset_no_controls <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_no_controls.xlsx", sheet = "LGA")
+
+LGAs_by_state <- combined_dataset_no_controls |>
+  dplyr::group_by(State) |>
+  dplyr::summarise(Count = dplyr::n_distinct(LGA))
+
+```
