@@ -27,7 +27,7 @@ clean_sa_datasets <- function(folder_path) {
   })
 
   cleaned_data <- dplyr::bind_rows(cleaned_sheets) |>
-    dplyr::filter(Year < 2023 | (Year == 2023 & Quarter <= 3))
+    dplyr::filter(Year < 2023 | (Year == 2023 & Quarter <= 2))
 
   return(cleaned_data)
 

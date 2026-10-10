@@ -36,7 +36,7 @@ clean_qld_dataset <- function(raw_sheet_path) {
                      by = join_columns)
 
   cleaned_dataset <- dplyr::bind_rows(combined_lga, combined_qld) |>
-    dplyr::filter(Year < 2024 | (Year == 2024 & Quarter <= 3))
+    dplyr::filter(Year < 2024 | (Year == 2024 & Quarter <= 1))
 
   return(cleaned_dataset)
 
