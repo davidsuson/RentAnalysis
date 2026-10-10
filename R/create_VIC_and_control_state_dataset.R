@@ -36,7 +36,7 @@ create_vic_and_control_state_dataset <- function(data, control_state, outcome) {
     dplyr::group_by(Dwelling, Bedrooms)
 
   dwelling_bedroom_combos <- grouped_filtered_data  |>
-    dplyr::group_split(.keep = FALSE)
+    dplyr::group_split()
 
   names(dwelling_bedroom_combos) <- grouped_filtered_data |>
     dplyr::group_by(Dwelling, Bedrooms) |>
