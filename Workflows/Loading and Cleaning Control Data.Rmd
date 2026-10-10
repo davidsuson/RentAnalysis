@@ -117,3 +117,57 @@ excel_sheet <- list(
 writexl::write_xlsx(excel_sheet, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_with_controls.xlsx")
 
 ```
+
+### Creating each of the VIC and control state datasets
+
+# LGA datasets
+```{r}
+
+LGA_combined_dataset_with_controls <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_with_controls.xlsx", sheet = "LGA")
+
+pairs <- tidyr::expand_grid(
+  control_state = c("NSW", "SA", "QLD"),
+  outcome = c("New_Bonds", "Median_Rent")
+)
+
+purrr::pwalk(pairs, \(control_state, outcome) {
+  vic_and_control_state <- create_vic_and_control_state_dataset(
+    data = LGA_combined_dataset_with_controls, 
+    control_state = control_state, 
+    outcome = outcome
+  )
+  
+  writexl::write_xlsx(
+    vic_and_control_state,
+    paste0("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA/", "LGA_WITH_CONTROLS_VIC_", control_state, "_", outcome, ".xlsx")
+  )
+})
+
+
+```
+
+# State datasets
+
+```{r}
+
+State_combined_dataset_with_controls <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_with_controls.xlsx", sheet = "State")
+
+pairs <- tidyr::expand_grid(
+  control_state = c("NSW", "SA", "QLD"),
+  outcome = c("New_Bonds", "Median_Rent")
+)
+
+purrr::pwalk(pairs, \(control_state, outcome) {
+  vic_and_control_state <- create_vic_and_control_state_dataset(
+    data = State_combined_dataset_with_controls, 
+    control_state = control_state, 
+    outcome = outcome
+  )
+  
+  writexl::write_xlsx(
+    vic_and_control_state,
+    paste0("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/State/", "STATE_WITH_CONTROLS_VIC_", control_state, "_", outcome, ".xlsx")
+  )
+})
+
+```
