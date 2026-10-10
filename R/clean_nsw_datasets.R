@@ -21,7 +21,8 @@ clean_nsw_datasets <- function(folder_path) {
     return(cleaned_sheet)
   })
 
-  cleaned_dataset <- dplyr::bind_rows(cleaned_sheets)
+  cleaned_dataset <- dplyr::bind_rows(cleaned_sheets) |>
+    dplyr::filter(Year <= 2022 & Quarter <= 4)
 
   return(cleaned_dataset)
 
