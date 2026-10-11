@@ -11,7 +11,8 @@ test_parallel_trends(
   treatment_time = c(2021, 1),
   bin_width = 4,
   baseline_quarter = -1,
-  unit
+  unit,
+  outcome
 )
 }
 \arguments{
@@ -45,6 +46,8 @@ either \code{"State"} or \code{"LGA"}. Determines the fixed effects
 (\code{State + Quarter} vs. \code{LGA + Quarter}), the clustering/vcov used
 (heteroskedasticity-robust for \code{"State"}, clustered by \code{Region} for
 \code{"LGA"}), and which columns are treated as controls.}
+
+\item{outcome}{A character string giving the outcome variable, either \code{"New_Bonds"}}
 }
 \value{
 A named list of \code{fixest} model objects, one per

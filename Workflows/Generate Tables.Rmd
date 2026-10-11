@@ -15,3 +15,52 @@ LGAs_by_state <- combined_dataset_no_controls |>
   dplyr::summarise(Count = dplyr::n_distinct(LGA))
 
 ```
+
+## Non-control time period
+
+### Median Rent
+
+```{r}
+
+LGAs_median_rent_non_control_time <- build_rent_observations_table(outcome = "Median_Rent",
+                                      folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA")
+
+cat(LGAs_median_rent_non_control_time$latex_table)
+
+```
+
+### New Bonds
+
+```{r}
+
+LGAs_new_bonds_non_control_time <- build_rent_observations_table(outcome = "New_Bonds",
+                                      folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA")
+
+cat(LGAs_new_bonds_non_control_time$latex_table)
+
+```
+
+## Control time period
+
+### Median Rent
+
+```{r}
+
+LGAs_median_rent_control_time <- build_rent_observations_table(outcome = "Median_Rent",
+                                      folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA")
+
+cat(LGAs_median_rent_control_time$latex_table)
+
+```
+
+### New Bonds
+
+```{r}
+
+LGAs_new_bonds_control_time <- build_rent_observations_table(outcome = "New_Bonds",
+                                      folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA")
+
+cat(LGAs_new_bonds_control_time$latex_table)
+
+```
+
