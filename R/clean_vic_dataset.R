@@ -22,7 +22,7 @@ clean_vic_dataset <- function(raw_sheet_path) {
   })
 
   cleaned_dataset <- dplyr::bind_rows(cleaned_sheets) |>
-    dplyr::filter(Year < 2024 | (Year == 2024 & Quarter <= 1))
+    filter_state_panel_and_complete_observations(max_year = 2024, max_quarter = 1)
 
   return(cleaned_dataset)
 

@@ -115,26 +115,11 @@ writexl::write_xlsx(cleaned_sa_dataset, "C:/Users/David/Desktop/MicroEcon - Rent
 
 combined_dataset <- dplyr::bind_rows(cleaned_nsw_dataset, cleaned_vic_dataset, cleaned_sa_dataset, cleaned_qld_dataset)
 
-max_year_and_quarter <- combined_dataset |>
-  dplyr::group_by(State) |>
-  dplyr::summarise(Max_Year = max(Year),
-                   Max_Quarter = max(Quarter))
-
-# As mentioned beforehand, NSW only has data available after 2018. Now, just find the common max year and quarter across all of the states. # Filter for common time period and required options
-
 filtered_combined_dataset <- combined_dataset |>
-  dplyr::filter(Year <= min(max_year_and_quarter$Max_Year) 
-                & Quarter <= min(max_year_and_quarter$Max_Quarter),
-                Year >= 2018,
-                (Dwelling == "Flat" & Bedrooms %in% c(1, 2, 3)) |
+  dplyr::filter((Dwelling == "Flat" & Bedrooms %in% c(1, 2, 3)) |
                 (Dwelling == "House" & Bedrooms %in% c(2, 3, 4)) |
                 (Dwelling == "All Properties" & Bedrooms == "All Sizes")
-                ) |>
-  dplyr::mutate(
-    qtr_num = Year * 4 + Quarter,
-    Running_Quarter = qtr_num - min(qtr_num) + 1
-  ) |>
-  dplyr::select(-qtr_num)
+                )
 
 state_observations <- filtered_combined_dataset |>
   dplyr::filter(LGA == "Table Total") |>
