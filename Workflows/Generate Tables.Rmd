@@ -16,51 +16,28 @@ LGAs_by_state <- combined_dataset_no_controls |>
 
 ```
 
-## Non-control time period
+## Observation and valid LGA summaries
 
 ### Median Rent
 
 ```{r}
-
-LGAs_median_rent_non_control_time <- build_valid_LGA_table(outcome = "Median_Rent",
-                                      folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA")
-
-cat(LGAs_median_rent_non_control_time$latex_table)
-
+LGAs_median_rent <- build_LGA_and_observation_summary(outcome = "Median_Rent",
+                                     control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA",
+                                     non_control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA")
+median_rent_table <- build_valid_LGA_table(LGAs_median_rent)
+cat(median_rent_table)
 ```
+
 
 ### New Bonds
 
 ```{r}
 
-LGAs_new_bonds_non_control_time <- build_valid_LGA_table(outcome = "New_Bonds",
-                                      folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA")
+LGAs_new_bonds <- build_LGA_and_observation_summary(outcome = "New_Bonds",
+                                     control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA",
+                                     non_control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA")
 
-cat(LGAs_new_bonds_non_control_time$latex_table)
-
-```
-
-## Control time period
-
-### Median Rent
-
-```{r}
-
-LGAs_median_rent_control_time <- build_valid_LGA_table(outcome = "Median_Rent",
-                                      folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA")
-
-cat(LGAs_median_rent_control_time$latex_table)
-
-```
-
-### New Bonds
-
-```{r}
-
-LGAs_new_bonds_control_time <- build_valid_LGA_table(outcome = "New_Bonds",
-                                      folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA")
-
-cat(LGAs_new_bonds_control_time$latex_table)
-
+new_bonds_table <- build_valid_LGA_table(LGAs_new_bonds)
+cat(new_bonds_table)
 ```
 

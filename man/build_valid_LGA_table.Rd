@@ -4,32 +4,20 @@
 \alias{build_valid_LGA_table}
 \title{build_valid_LGA_table}
 \usage{
-build_valid_LGA_table(folder, outcome)
+build_valid_LGA_table(data, state_order = c("VIC", "NSW", "SA", "QLD"))
 }
 \arguments{
-\item{folder}{A string. Path to the directory containing the Excel files.}
+\item{data}{A data frame with columns \code{Control} (\code{TRUE}/\code{FALSE}), \code{State},
+\code{Dwelling}, \code{Bedrooms} and \code{Valid_LGAs}.}
 
-\item{outcome}{A string. Regular expression passed to
-\code{list.files(pattern = )} to select the files for one outcome
-(e.g. \code{"Median_Rent"}).}
+\item{state_order}{Character vector giving the row order of states within
+each panel.}
 }
 \value{
-A list with two elements:
-\describe{
-\item{\code{latex_table}}{A \code{kableExtra} LaTeX table of valid LGA counts,
-with states as rows and dwelling/bedroom combinations as columns.}
-\item{\code{counts_table}}{A tibble with columns \code{State}, \code{Dwelling},
-\code{Bedrooms} and \code{Valid_LGAs} (the number of distinct LGAs).}
-}
+A \code{kableExtra} LaTeX table.
 }
 \description{
-Finds every Excel file in \code{folder} whose name matches \code{outcome} and counts
-the distinct LGAs with observations for each State x Dwelling x Bedrooms
-combination in each file. It then combines the counts into one data frame
-and formats them as a LaTeX table.
-}
-\details{
-Each file is labelled by its state pair, taken from the 4th and 5th
-underscore-separated words of the file name. VIC appears in more than one
-state-pair file, so VIC counts are taken from the \code{VIC_QLD} file only.
+Formats counts of valid LGAs as a LaTeX table, with states as rows,
+dwelling/bedroom combinations as columns, and separate panels for the
+non-control and control datasets.
 }
