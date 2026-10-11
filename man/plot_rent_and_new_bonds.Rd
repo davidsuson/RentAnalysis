@@ -4,11 +4,13 @@
 \alias{plot_rent_and_new_bonds}
 \title{plot_rent_and_new_bonds}
 \usage{
-plot_rent_and_new_bonds(data, treated, controls)
+plot_rent_and_new_bonds(folder, treated, controls)
 }
 \arguments{
-\item{data}{A data frame. Must contain the columns \code{State}, \code{Dwelling},
-\code{Bedrooms}, \code{Quarter_Start_Date}, \code{Median_Rent} and \code{New_Bonds}.}
+\item{folder}{A string. Path to the folder of state-level Excel files.
+File names must contain \code{"Median_Rent"} or \code{"New_Bonds"}, and every
+sheet must contain the columns \code{State}, \code{Dwelling}, \code{Bedrooms},
+\code{Quarter_Start_Date} and the outcome column.}
 
 \item{treated}{A string. The treated state, plotted in every chart.}
 
@@ -20,8 +22,12 @@ A named list of patchwork figures, one per dwelling/bedroom
 combination. Names take the form "Dwelling with num_bedroom/s".
 }
 \description{
-For every combination of dwelling type and number of bedrooms in \code{data},
-plots the treated state against each control state for median weekly rent
-and new bonds lodged. One figure is produced per dwelling/bedroom
-combination.
+For every combination of dwelling type and number of bedrooms, plots the
+treated state against each control state for median weekly rent and new
+bonds lodged. Data are read from every Excel file in \code{folder} (one file
+per state pair and outcome, one sheet per dwelling/bedroom combination).
+One figure is produced per dwelling/bedroom combination.
+}
+\seealso{
+\code{\link[=load_rent_and_bond_data]{load_rent_and_bond_data()}}
 }

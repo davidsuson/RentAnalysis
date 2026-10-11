@@ -1,19 +1,27 @@
 #' plot_rent_and_new_bonds
 #'
-#' For every combination of dwelling type and number of bedrooms in `data`,
-#' plots the treated state against each control state for median weekly rent
-#' and new bonds lodged. One figure is produced per dwelling/bedroom
-#' combination.
+#' For every combination of dwelling type and number of bedrooms, plots the
+#' treated state against each control state for median weekly rent and new
+#' bonds lodged. Data are read from every Excel file in `folder` (one file
+#' per state pair and outcome, one sheet per dwelling/bedroom combination).
+#' One figure is produced per dwelling/bedroom combination.
 #'
-#' @param data A data frame. Must contain the columns `State`, `Dwelling`,
-#'   `Bedrooms`, `Quarter_Start_Date`, `Median_Rent` and `New_Bonds`.
+#' @param folder A string. Path to the folder of state-level Excel files.
+#'   File names must contain `"Median_Rent"` or `"New_Bonds"`, and every
+#'   sheet must contain the columns `State`, `Dwelling`, `Bedrooms`,
+#'   `Quarter_Start_Date` and the outcome column.
 #' @param treated A string. The treated state, plotted in every chart.
 #' @param controls A character vector. The states the treated state is
 #'   plotted against.
 #'
 #' @returns A named list of patchwork figures, one per dwelling/bedroom
 #'   combination. Names take the form "Dwelling with num_bedroom/s".
-plot_rent_and_new_bonds <- function(data, treated, controls) {
+#'
+#' @seealso [load_rent_and_bond_data()]
+plot_rent_and_new_bonds <- function(folder, treated, controls) {
+
+  data <- load_rent_and_bond_data(folder)
+
   combos <- data |>
     dplyr::filter(State != treated) |>
     dplyr::rename(dwelling = "Dwelling", bedroom = "Bedrooms") |>
@@ -29,19 +37,66 @@ plot_rent_and_new_bonds <- function(data, treated, controls) {
                             treated,
                             subset_details = combo,
                             palette = palette)
-
   })
 
   names(plots) <- vapply(combos, function(combo) {
     glue::glue("{unique(combo$dwelling)} with {unique(combo$bedroom)} bedroom/s")
   }, character(1))
 
-  return(plots)
+  plots
 
 }
 
-
 # HELPERS
+
+#' load_rent_and_bond_data
+#'
+#' Reads every Median_Rent and New_Bonds Excel file in a folder (all sheets),
+#' removes duplicate rows for states that appear in more than one state-pair
+#' file, and joins the two outcomes into one data frame.
+#'
+#' @param folder A string. Path to the folder of Excel files.
+#'
+#' @returns A tibble with one row per State x Dwelling x Bedrooms x
+#'   Quarter_Start_Date and the columns `State`, `Dwelling`, `Bedrooms`,
+#'   `Quarter_Start_Date`, `Median_Rent` and `New_Bonds`.
+load_rent_and_bond_data <- function(folder) {
+
+  keys <- c("State_Pair", "State", "Dwelling", "Bedrooms", "Quarter_Start_Date")
+
+  rent  <- read_outcome_files(folder, "Median_Rent", keys)
+  bonds <- read_outcome_files(folder, "New_Bonds",   keys)
+
+  dplyr::full_join(rent, bonds, by = keys)
+}
+
+#' read_outcome_files
+#'
+#' Reads every sheet of every Excel file in `folder` whose name contains
+#' `outcome`, stacks them, keeps only the key columns and the outcome, and
+#' removes duplicate rows (e.g. VIC appearing in every state-pair file).
+#'
+#' @param folder A string. Path to the folder of Excel files.
+#' @param outcome A string. The outcome column, also used to select files.
+#' @param keys A character vector. Columns identifying one observation.
+#'
+#' @returns A tibble with the `keys` columns and the `outcome` column.
+read_outcome_files <- function(folder, outcome, keys) {
+
+  file_paths  <- list.files(folder, pattern = outcome, full.names = TRUE)
+  state_pairs <- stringr::word(tools::file_path_sans_ext(basename(file_paths)), 4, 5, sep = "_")
+
+  purrr::map2(file_paths, state_pairs, function(file_path, pair) {
+    readxl::excel_sheets(file_path) |>
+      purrr::map(~ readxl::read_excel(file_path, sheet = .x) |>
+                   # "All Sizes" makes some sheets text and others numeric
+                   dplyr::mutate(Bedrooms = as.character(Bedrooms))) |>
+      dplyr::bind_rows() |>
+      dplyr::mutate(State_Pair = pair)
+  }) |>
+    dplyr::bind_rows() |>
+    dplyr::select(dplyr::all_of(c(keys, outcome)))
+}
 
 #' plot_rent_bonds_segment
 #'
@@ -66,8 +121,8 @@ plot_rent_and_new_bonds <- function(data, treated, controls) {
 plot_rent_bonds_segment <- function(data, treated, subset_details, palette) {
   segment_plots <- purrr::pmap(subset_details, function(dwelling, bedroom, control) {
     segment_data <- data |>
-      dplyr::filter(Dwelling == dwelling,
-                    State %in% c(treated, control),
+      dplyr::filter(State_Pair == paste(treated, control, sep = "_"),
+                    Dwelling == dwelling,
                     Bedrooms == bedroom)
 
     list(plot_rent(segment_data, palette),

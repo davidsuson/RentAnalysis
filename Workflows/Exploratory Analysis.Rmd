@@ -5,10 +5,6 @@ output: html_document
 
 This document will show all the figures and tables for the exploratory analysis done in the report.
 
-```{r}
-data <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_with_controls.xlsx", sheet = "State")
-```
-
 # Comparing median rent and new bonds lodged
 
 This will compare median rent and new bonds lodged for all of VIC and NSW across:
@@ -20,13 +16,13 @@ This will compare median rent and new bonds lodged for all of VIC and NSW across
 5.  4 bedroom
 
 ```{r}
-state_plots <- plot_rent_and_new_bonds(data, treated = c("VIC"), controls = c("NSW", "QLD", "SA"))
+state_plots <- plot_rent_and_new_bonds("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/State", treated = c("VIC"), controls = c("NSW", "QLD", "SA"))
 
 purrr::iwalk(state_plots, function(plot, name) {
   file_name <- gsub("[^A-Za-z0-9]+", "_", name)
 
   ggplot2::ggsave(
-    filename = file.path("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Exhibits/Plots/", paste0(file_name, ".png")),
+    filename = file.path("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Exhibits/State Plots/", paste0(file_name, ".png")),
     plot = plot,
     width = 10,
     height = 12,

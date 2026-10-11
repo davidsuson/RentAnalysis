@@ -7,5 +7,7 @@
 run_did(file_path, outcome, control)
 }
 \description{
-run_did
+Runs \code{\link[did:att_gt]{did::att_gt()}} on every sheet of an Excel workbook. Uses never-treated
+units as the comparison group, a universal base period, and standard errors
+clustered by region.
 }
