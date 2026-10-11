@@ -4,108 +4,22 @@ output: html_document
 ---
 
 ```{r}
-state_data <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_with_controls.xlsx", sheet = "State")
-LGA_data  <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_with_controls.xlsx", sheet = "LGA")
+
+median_rent <- run_did_regressions(non_control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA",
+                    control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA",
+                    outcome = "Median_Rent")
+
+cat(build_did_table(median_rent, value = "pretest_p"))  
+cat("\n -------------------------------------------- \n")
+cat(build_did_table(median_rent, value = "att_se"))     
 ```
-
-# State level check
-
 ```{r}
 
-state_no_controls_data <- state_data |>
-  dplyr::select(c("Dwelling", "Bedrooms", "Median_Rent", "State", "Year", "Quarter"))
+new_bonds <- run_did_regressions(non_control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA",
+                    control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA",
+                    outcome = "New_Bonds")
 
-state_rent_no_controls_regressions <- test_parallel_trends(state_no_controls_data,
-                               treated = "VIC",
-                               controls = c("SA", "QLD", "NSW"),
-                               treatment_time = c(2021, 1),
-                               bin_width = 7,
-                               baseline_quarter = -1,
-                               unit = "State",
-                               outcome = "Median_Rent")
-
-state_bonds_no_controls_regressions <- test_parallel_trends(state_no_controls_data,
-                               treated = "VIC",
-                               controls = c("SA", "QLD", "NSW"),
-                               treatment_time = c(2021, 1),
-                               bin_width = 7,
-                               baseline_quarter = -1,
-                               unit = "State",
-                               outcome = "New_Bonds")
-```
-
-There isn't enough observations to estimate all the control buckets.
-
-
-# LGA level check
-
-```{r}
-
-LGA_no_controls_data <- LGA_data |>
-  dplyr::select(c("Dwelling", "Bedrooms", "Median_Rent", "State", "LGA", "Region", "Year", "Quarter"))
-
-LGA_rent_no_controls_regressions <- test_parallel_trends(LGA_no_controls_data,
-                               treated = "VIC",
-                               controls = c("SA", "QLD", "NSW"),
-                               treatment_time = c(2021, 1),
-                               bin_width = 7,
-                               baseline_quarter = -1,
-                               unit = "LGA",
-                               outcome = "Median_Rent")
-
-LGA_bonds_no_controls_regressions <- test_parallel_trends(LGA_no_controls_data,
-                               treated = "VIC",
-                               controls = c("SA", "QLD", "NSW"),
-                               treatment_time = c(2021, 1),
-                               bin_width = 7,
-                               baseline_quarter = -1,
-                               unit = "LGA",
-                               outcome = "New_Bonds")
-
-```
-
-```{r}
-LGA_controls_data <- LGA_data |>
-  dplyr::select(-c("New_Bonds", "Quarter_Start_Date", "Quarter_End_Date", "M 0–4", "F 0–4"))
-
-LGA_rent_controls_regressions <- test_parallel_trends(LGA_controls_data,
-                             treated = "VIC",
-                             controls = c("SA", "QLD", "NSW"),
-                             treatment_time = c(2021, 1),
-                             bin_width = 7,
-                             baseline_quarter = -1,
-                             unit = "LGA",
-                             outcome = "Median_Rent")
-
-LGA_bonds_controls_regressions <- test_parallel_trends(LGA_controls_data,
-                             treated = "VIC",
-                             controls = c("SA", "QLD", "NSW"),
-                             treatment_time = c(2021, 1),
-                             bin_width = 7,
-                             baseline_quarter = -1,
-                             unit = "LGA",
-                             outcome = "New_Bonds")
-
-```
-
-# Export tables to LATEX
-
-```{r}
-
-all_regressions <- list(
-  state_rent_no_controls_regressions,
-  LGA_rent_no_controls_regressions,
-  LGA_rent_controls_regressions,
-  state_bonds_no_controls_regressions,
-  LGA_bonds_no_controls_regressions,
-  LGA_bonds_controls_regressions
-)
-
-latex_tables <- lapply(all_regressions, function(regressions){
-  latex_table <- regressions |>
-    build_parallel_trends_table(alpha = 0.05,
-                                pre_threshold = -1) |>
-    render_parallel_trends_latex()
-})
-
+cat(build_did_table(new_bonds, value = "pretest_p"))  
+cat("\n -------------------------------------------- \n")
+cat(build_did_table(new_bonds, value = "att_se"))     
 ```
