@@ -23,3 +23,9 @@ cat(build_did_table(new_bonds, value = "pretest_p"))
 cat("\n -------------------------------------------- \n")
 cat(build_did_table(new_bonds, value = "att_se"))     
 ```
+```{r}
+
+export_combined_event_plots(median_rent, "Median Weekly Rent", "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Exhibits/Event Plots")
+
+export_combined_event_plots(new_bonds, "Quarterly New Bonds", "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Exhibits/Event Plots")
+```
