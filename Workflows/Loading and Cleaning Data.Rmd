@@ -92,7 +92,12 @@ filtered_combined_dataset <- combined_dataset |>
                 (Dwelling == "Flat" & Bedrooms %in% c(1, 2, 3)) |
                 (Dwelling == "House" & Bedrooms %in% c(2, 3, 4)) |
                 (Dwelling == "All Properties" & Bedrooms == "All Sizes")
-                )
+                ) |>
+  dplyr::mutate(
+    qtr_num = Year * 4 + Quarter,
+    Running_Quarter = qtr_num - min(qtr_num) + 1
+  ) |>
+  dplyr::select(-qtr_num)
 
 state_observations <- filtered_combined_dataset |>
   dplyr::filter(LGA == "Table Total") |>
