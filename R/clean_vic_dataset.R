@@ -21,8 +21,16 @@ clean_vic_dataset <- function(raw_sheet_path) {
     return(cleaned_sheet)
   })
 
+  TREATMENT_YEAR <- 2021
+  TREATMENT_QUARTER <- 1
+  START_YEAR <- 2018
+  START_QUARTER <- 1
+
+  TREATED_RUNNING_QUARTER <- (TREATMENT_YEAR - START_YEAR) * 4 + (TREATMENT_QUARTER - START_QUARTER) + 1
+
   cleaned_dataset <- dplyr::bind_rows(cleaned_sheets) |>
-    filter_state_panel_and_complete_observations(max_year = 2024, max_quarter = 1)
+    filter_state_panel_and_complete_observations(max_year = 2024, max_quarter = 1) |>
+    dplyr::mutate(Treated_Time = TREATED_RUNNING_QUARTER)
 
   return(cleaned_dataset)
 

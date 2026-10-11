@@ -53,7 +53,8 @@ create_vic_and_control_state_dataset <- function(data, control_state, outcome) {
         dplyr::filter(!any(is.na(
           !!rlang::sym(outcome)
         ))) |>
-        dplyr::ungroup()
+        dplyr::ungroup() |>
+        dplyr::mutate(LGA_ID = as.integer(factor(paste(State, LGA))))
     )
   }
 

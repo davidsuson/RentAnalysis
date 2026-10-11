@@ -36,7 +36,8 @@ clean_qld_dataset <- function(raw_sheet_path) {
                      by = join_columns)
 
   cleaned_dataset <- dplyr::bind_rows(combined_lga, combined_qld) |>
-    filter_state_panel_and_complete_observations(max_year = 2024, max_quarter = 1)
+    filter_state_panel_and_complete_observations(max_year = 2024, max_quarter = 1) |>
+    dplyr::mutate(Treated_Time = 0)
 
   return(cleaned_dataset)
 

@@ -27,7 +27,8 @@ clean_sa_datasets <- function(folder_path) {
   })
 
   cleaned_data <- dplyr::bind_rows(cleaned_sheets) |>
-    filter_state_panel_and_complete_observations(max_year = 2023, max_quarter = 2)
+    filter_state_panel_and_complete_observations(max_year = 2023, max_quarter = 2) |>
+    dplyr::mutate(Treated_Time = 0)
 
   return(cleaned_data)
 

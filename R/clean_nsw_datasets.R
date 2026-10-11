@@ -22,7 +22,8 @@ clean_nsw_datasets <- function(folder_path) {
   })
 
   cleaned_dataset <- dplyr::bind_rows(cleaned_sheets) |>
-    filter_state_panel_and_complete_observations(max_year = 2022, max_quarter = 3)
+    filter_state_panel_and_complete_observations(max_year = 2022, max_quarter = 3) |>
+    dplyr::mutate(Treated_Time = 0)
 
   return(cleaned_dataset)
 
