@@ -22,7 +22,7 @@ LGAs_by_state <- combined_dataset_no_controls |>
 
 ```{r}
 
-LGAs_median_rent_non_control_time <- build_rent_observations_table(outcome = "Median_Rent",
+LGAs_median_rent_non_control_time <- build_valid_LGA_table(outcome = "Median_Rent",
                                       folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA")
 
 cat(LGAs_median_rent_non_control_time$latex_table)
@@ -33,7 +33,7 @@ cat(LGAs_median_rent_non_control_time$latex_table)
 
 ```{r}
 
-LGAs_new_bonds_non_control_time <- build_rent_observations_table(outcome = "New_Bonds",
+LGAs_new_bonds_non_control_time <- build_valid_LGA_table(outcome = "New_Bonds",
                                       folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA")
 
 cat(LGAs_new_bonds_non_control_time$latex_table)
@@ -46,7 +46,7 @@ cat(LGAs_new_bonds_non_control_time$latex_table)
 
 ```{r}
 
-LGAs_median_rent_control_time <- build_rent_observations_table(outcome = "Median_Rent",
+LGAs_median_rent_control_time <- build_valid_LGA_table(outcome = "Median_Rent",
                                       folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA")
 
 cat(LGAs_median_rent_control_time$latex_table)
@@ -57,7 +57,7 @@ cat(LGAs_median_rent_control_time$latex_table)
 
 ```{r}
 
-LGAs_new_bonds_control_time <- build_rent_observations_table(outcome = "New_Bonds",
+LGAs_new_bonds_control_time <- build_valid_LGA_table(outcome = "New_Bonds",
                                       folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA")
 
 cat(LGAs_new_bonds_control_time$latex_table)

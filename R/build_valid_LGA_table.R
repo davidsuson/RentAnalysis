@@ -1,4 +1,4 @@
-#' build_rent_observations_table
+#' build_valid_LGA_table
 #'
 #' Finds every Excel file in `folder` whose name matches `outcome` and counts
 #' the distinct LGAs with observations for each State x Dwelling x Bedrooms
@@ -23,7 +23,7 @@
 #'   }
 #'
 #' @export
-build_rent_observations_table <- function(folder, outcome){
+build_valid_LGA_table <- function(folder, outcome){
 
   file_paths <- list.files(folder, pattern = outcome, full.names = TRUE)
   state_pairs <- stringr::word(tools::file_path_sans_ext(basename(file_paths)), 4, 5, sep = "_")
