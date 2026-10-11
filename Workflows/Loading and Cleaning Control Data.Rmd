@@ -19,47 +19,13 @@ devtools::load_all()
 
 ```{r}
 rent_LGA_data <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_no_controls.xlsx",
-                               sheet = "LGA") |>
-  dplyr::mutate(
-    LGA = dplyr::replace_values(LGA, 
-                                "Sydney City" ~ "Sydney", 
-                                "Cootamundra-Gundagai Regional" ~ "Gundagai", 
-                                "Sutherland" ~ "Sutherland Shire",
-                                "The Hills" ~ "The Hills Shire",
-                                "Bathurst" ~ "Bathurst Regional",
-                                "Dubbo Regional" ~ "Western Plains Regional",
-                                "Glen Innes" ~ "Glen Innes Severn",
-                                "Greater Hume" ~ "Greater Hume Shire",
-                                "Tamworth" ~ "Tamworth Regional",
-                                "Upper Hunter" ~ "Upper Hunter Shire",
-                                "Upper Lachlan" ~ "Upper Lachlan Shire",
-                                "Warrumbungle" ~ "Warrumbungle Shire",
-                                "Mornington Penin'a" ~ "Mornington Peninsula",
-                                "Mallala" ~ "Adelaide Plains"
-                                ) 
-  )
+                               sheet = "LGA")
 
 rent_state_data <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_no_controls.xlsx",
                                sheet = "State") |>
   dplyr::mutate(LGA = State) # This is for the join 
 ```
 
-The datset is inconsistent for 2018 Q1, Q2 for select LGAs. They called:
-1. Sydney, Sydney City in 2018 Q1, Q2
-2. Gundagai, Cootamundra-Gundagai Regional in 2018 Q1, Q2
-3. Sutherland Shire, Sutherland in 2018 Q1, Q2
-4. The Hills Shire, The Hills in 2018 Q1, Q2
-5. Bathurst Regional, Bathurst in 2018 Q1, Q2
-6. Western Plains Regional, Dubbo Regional in 2018 Q1, Q2
-7. Glen Innes Severn, Glen Innes in 2018 Q1, Q2
-8. Greater Hume Shire, Greater Hume in 2018 Q1, Q2
-9. Tamworth Regional, Tamworth in 2018 Q1, Q2
-10. Upper Hunter Shire, Upper Hunter in 2018 Q1, Q2
-11. Upper Lachlan Shire, Upper Lachlan in 2018 Q1, Q2
-12. Warrambungle Shire, Warrambungle in 2018 Q1, Q2
-13. Adelaide Plains, Mallala in 2018 Q1, Q2
-
-Additionally, Mornington Peninsula is called Morningtong Penin'a throughout the entire dataset.
 # Cleaning income and demographic data
 
 ```{r}

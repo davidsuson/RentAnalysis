@@ -23,7 +23,10 @@ As we have downloaded the required files, we'll need to clean them, standardize 
 
 ```{r}
 
-cleaned_vic_dataset <-  clean_vic_dataset("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/vic/VIC all quarters.xlsx")
+cleaned_vic_dataset <-  clean_vic_dataset("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/vic/VIC all quarters.xlsx") |>
+  dplyr::mutate(
+    LGA = dplyr::replace_values(LGA, "Mornington Penin'a" ~ "Mornington Peninsula") 
+  )
 
 writexl::write_xlsx(cleaned_vic_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/cleaned_vic_dataset.xlsx")
 
@@ -40,11 +43,42 @@ I will just filter this at the end.
 
 ```{r}
 
-cleaned_nsw_dataset <- clean_nsw_datasets("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/nsw")
+cleaned_nsw_dataset <- clean_nsw_datasets("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/nsw") |>
+  dplyr::mutate(
+    LGA = dplyr::replace_values(LGA, 
+                                "Sydney City" ~ "Sydney", 
+                                "Cootamundra-Gundagai Regional" ~ "Gundagai", 
+                                "Sutherland" ~ "Sutherland Shire",
+                                "The Hills" ~ "The Hills Shire",
+                                "Bathurst" ~ "Bathurst Regional",
+                                "Dubbo Regional" ~ "Western Plains Regional",
+                                "Glen Innes" ~ "Glen Innes Severn",
+                                "Greater Hume" ~ "Greater Hume Shire",
+                                "Tamworth" ~ "Tamworth Regional",
+                                "Upper Hunter" ~ "Upper Hunter Shire",
+                                "Upper Lachlan" ~ "Upper Lachlan Shire",
+                                "Warrumbungle" ~ "Warrumbungle Shire"
+                                ) 
+  )
 
 writexl::write_xlsx(cleaned_nsw_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/cleaned_nsw_dataset.xlsx")
 
 ```
+
+The datset is inconsistent for 2018 Q1, Q2 for select LGAs. They called:
+1. Sydney, Sydney City in 2018 Q1, Q2
+2. Gundagai, Cootamundra-Gundagai Regional in 2018 Q1, Q2
+3. Sutherland Shire, Sutherland in 2018 Q1, Q2
+4. The Hills Shire, The Hills in 2018 Q1, Q2
+5. Bathurst Regional, Bathurst in 2018 Q1, Q2
+6. Western Plains Regional, Dubbo Regional in 2018 Q1, Q2
+7. Glen Innes Severn, Glen Innes in 2018 Q1, Q2
+8. Greater Hume Shire, Greater Hume in 2018 Q1, Q2
+9. Tamworth Regional, Tamworth in 2018 Q1, Q2
+10. Upper Hunter Shire, Upper Hunter in 2018 Q1, Q2
+11. Upper Lachlan Shire, Upper Lachlan in 2018 Q1, Q2
+12. Warrambungle Shire, Warrambungle in 2018 Q1, Q2
+13. Adelaide Plains, Mallala in 2018 Q1, Q2
 
 ## QLD data
 
@@ -66,7 +100,10 @@ writexl::write_xlsx(cleaned_qld_dataset, "C:/Users/David/Desktop/MicroEcon - Ren
 # Map these to ABS SA4 Regions manually as dataset doesn't contain a region column
 
 cleaned_sa_dataset <- clean_sa_datasets("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/sa") |>
-  map_SA_LGA_to_region()
+  map_SA_LGA_to_region() |>
+  dplyr::mutate(
+    LGA = dplyr::replace_values(LGA, "Mallala" ~ "Adelaide Plains") 
+  )
 
 writexl::write_xlsx(cleaned_sa_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/cleaned_sa_dataset.xlsx")
 
