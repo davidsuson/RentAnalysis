@@ -18,21 +18,22 @@ files for the control time periods.}
 (e.g. \code{"Median_Rent"}).}
 }
 \value{
-A tibble with one row per Control x State x Dwelling x Bedrooms
-combination and the columns:
+A list with two elements:
 \describe{
-\item{\code{State}, \code{Dwelling}, \code{Bedrooms}}{The grouping variables.}
-\item{\code{Valid_LGAs}}{Integer. The number of distinct LGAs.}
-\item{\code{Observations}}{Integer. The number of LGA--quarter
-observations.}
-\item{\code{Quarters}}{Integer. The number of quarters.}
-\item{\code{Control}}{Logical. \code{TRUE} for the control dataset, \code{FALSE}
-otherwise.}
+\item{\code{LGA_counts}}{A tibble with one row per
+Control x State x Dwelling x Bedrooms combination and the columns
+\code{State}, \code{Dwelling}, \code{Bedrooms}, \code{Valid_LGAs} and \code{Control}.}
+\item{\code{Observations}}{A tibble with one row per
+Control x State_Pair x Dwelling x Bedrooms combination and the
+columns \code{State_Pair}, \code{Dwelling}, \code{Bedrooms}, \code{Observations},
+\code{Quarters} and \code{Control}.}
 }
+In both, \code{Control} is \code{TRUE} for the control dataset and \code{FALSE}
+otherwise.
 }
 \description{
-Builds a combined summary of valid LGAs, observations and quarters for one
-rent outcome, covering both the non-control and control datasets. Each
-dataset is summarised with \code{\link[=load_cleaned_data_folder]{load_cleaned_data_folder()}}, labelled with a
-\code{Control} column, and stacked.
+Builds combined summaries of valid LGAs and observations for one rent
+outcome, covering both the non-control and control datasets. Each dataset
+is summarised with \code{\link[=load_cleaned_data_folder]{load_cleaned_data_folder()}}, labelled with a \code{Control}
+column, and stacked element by element.
 }

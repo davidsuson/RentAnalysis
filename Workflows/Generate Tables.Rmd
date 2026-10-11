@@ -14,30 +14,44 @@ LGAs_by_state <- combined_dataset_no_controls |>
   dplyr::group_by(State) |>
   dplyr::summarise(Count = dplyr::n_distinct(LGA))
 
+LGAs_by_state
+
 ```
 
 ## Observation and valid LGA summaries
 
-### Median Rent
+### Valid LGA: Median Rent
 
 ```{r}
-LGAs_median_rent <- build_LGA_and_observation_summary(outcome = "Median_Rent",
+median_rent_summary <- build_LGA_and_observation_summary(outcome = "Median_Rent",
                                      control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA",
                                      non_control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA")
-median_rent_table <- build_valid_LGA_table(LGAs_median_rent)
-cat(median_rent_table)
+median_rent_LGA <- build_valid_LGA_table(median_rent_summary$LGA_counts)
+cat(median_rent_LGA)
+```
+
+### Valid LGA: New Bonds
+
+```{r}
+
+new_bonds_summary <- build_LGA_and_observation_summary(outcome = "New_Bonds",
+                                     control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA",
+                                     non_control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA")
+
+new_bonds_LGA <- build_valid_LGA_table(new_bonds_summary$LGA_counts)
+cat(new_bonds_LGA)
+```
+
+### Observation: Median Rent
+
+```{r}
+median_rent_obs <- build_observation_table(median_rent_summary$Observations)
+cat(median_rent_obs)
 ```
 
 
-### New Bonds
-
+### Observation: New Bonds
 ```{r}
-
-LGAs_new_bonds <- build_LGA_and_observation_summary(outcome = "New_Bonds",
-                                     control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA",
-                                     non_control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA")
-
-new_bonds_table <- build_valid_LGA_table(LGAs_new_bonds)
-cat(new_bonds_table)
+new_bonds_obs <- build_observation_table(new_bonds_summary$Observations)
+cat(new_bonds_obs)
 ```
-
