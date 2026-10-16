@@ -27,7 +27,7 @@ devtools::load_all()
 
 # PLEASE DO NOT RUN THIS IF YOU DO NOT WANT TO REDOWNLOAD THE NSW RAW DATA FILES.
 
-download_nsw_datasets(file_path = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/nsw")
+download_nsw_datasets(file_path = "Data/Raw Data/nsw")
 
 ```
 
@@ -43,6 +43,6 @@ Note that:
 
 # PLEASE DO NOT RUN THIS IF YOU DO NOT WANT TO REDOWNLOAD THE SA RAW DATA FILES.
 
-download_sa_datasets(file_path = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/sa")
+download_sa_datasets(file_path = "Data/Raw Data/sa")
 
 ```

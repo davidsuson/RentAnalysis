@@ -23,12 +23,12 @@ As we have downloaded the required files, we'll need to clean them, standardize 
 
 ```{r}
 
-cleaned_vic_dataset <-  clean_vic_dataset("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/vic/VIC all quarters.xlsx") |>
+cleaned_vic_dataset <-  clean_vic_dataset("Data/Raw Data/vic/VIC all quarters.xlsx") |>
   dplyr::mutate(
     LGA = dplyr::replace_values(LGA, "Mornington Penin'a" ~ "Mornington Peninsula") 
   )
 
-writexl::write_xlsx(cleaned_vic_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/cleaned_vic_dataset.xlsx")
+writexl::write_xlsx(cleaned_vic_dataset, "Data/Cleaned Data/cleaned_vic_dataset.xlsx")
 
 ```
 
@@ -43,7 +43,7 @@ I will just filter this at the end.
 
 ```{r}
 
-cleaned_nsw_dataset <- clean_nsw_datasets("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/nsw") |>
+cleaned_nsw_dataset <- clean_nsw_datasets("Data/Raw Data/nsw") |>
   dplyr::mutate(
     LGA = dplyr::replace_values(LGA, 
                                 "Sydney City" ~ "Sydney", 
@@ -61,7 +61,7 @@ cleaned_nsw_dataset <- clean_nsw_datasets("C:/Users/David/Desktop/MicroEcon - Re
                                 ) 
   )
 
-writexl::write_xlsx(cleaned_nsw_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/cleaned_nsw_dataset.xlsx")
+writexl::write_xlsx(cleaned_nsw_dataset, "Data/Cleaned Data/cleaned_nsw_dataset.xlsx")
 
 ```
 
@@ -86,10 +86,10 @@ The datset is inconsistent for 2018 Q1, Q2 for select LGAs. They called:
 
 # Map these to ABS SA4 Regions manually as dataset doesn't contain a region column
 
-cleaned_qld_dataset <- clean_qld_dataset("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/qld/rta-bond-statistics.xlsx") |>
+cleaned_qld_dataset <- clean_qld_dataset("Data/Raw Data/qld/rta-bond-statistics.xlsx") |>
   map_QLD_LGA_to_region()
 
-writexl::write_xlsx(cleaned_qld_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/cleaned_qld_dataset.xlsx")
+writexl::write_xlsx(cleaned_qld_dataset, "Data/Cleaned Data/cleaned_qld_dataset.xlsx")
 
 ```
 
@@ -99,13 +99,13 @@ writexl::write_xlsx(cleaned_qld_dataset, "C:/Users/David/Desktop/MicroEcon - Ren
 
 # Map these to ABS SA4 Regions manually as dataset doesn't contain a region column
 
-cleaned_sa_dataset <- clean_sa_datasets("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Raw Data/sa") |>
+cleaned_sa_dataset <- clean_sa_datasets("Data/Raw Data/sa") |>
   map_SA_LGA_to_region() |>
   dplyr::mutate(
     LGA = dplyr::replace_values(LGA, "Mallala" ~ "Adelaide Plains") 
   )
 
-writexl::write_xlsx(cleaned_sa_dataset, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/cleaned_sa_dataset.xlsx")
+writexl::write_xlsx(cleaned_sa_dataset, "Data/Cleaned Data/cleaned_sa_dataset.xlsx")
 
 ```
 
@@ -134,7 +134,7 @@ excel_file <- list(
   "LGA" = LGA_observations
 )
 
-writexl::write_xlsx(excel_file, "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_no_controls.xlsx")
+writexl::write_xlsx(excel_file, "Data/Cleaned Data/combined_dataset_no_controls.xlsx")
 
 ```   
 
@@ -143,7 +143,7 @@ writexl::write_xlsx(excel_file, "C:/Users/David/Desktop/MicroEcon - Rent/RentAna
 # LGA datasets
 ```{r}
 
-LGA_combined_dataset_no_controls <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_no_controls.xlsx", sheet = "LGA")
+LGA_combined_dataset_no_controls <- readxl::read_xlsx("Data/Cleaned Data/combined_dataset_no_controls.xlsx", sheet = "LGA")
 
 pairs <- tidyr::expand_grid(
   control_state = c("NSW", "SA", "QLD"),
@@ -159,7 +159,7 @@ purrr::pwalk(pairs, \(control_state, outcome) {
   
   writexl::write_xlsx(
     vic_and_control_state,
-    paste0("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA/", "LGA_NO_CONTROLS_VIC_", control_state, "_", outcome, ".xlsx")
+    paste0("Data/Final Data/No Controls/LGA/", "LGA_NO_CONTROLS_VIC_", control_state, "_", outcome, ".xlsx")
   )
 })
 
@@ -170,7 +170,7 @@ purrr::pwalk(pairs, \(control_state, outcome) {
 
 ```{r}
 
-State_combined_dataset_no_controls <- readxl::read_xlsx("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Cleaned Data/combined_dataset_no_controls.xlsx", sheet = "State")
+State_combined_dataset_no_controls <- readxl::read_xlsx("Data/Cleaned Data/combined_dataset_no_controls.xlsx", sheet = "State")
 
 pairs <- tidyr::expand_grid(
   control_state = c("NSW", "SA", "QLD"),
@@ -186,7 +186,7 @@ purrr::pwalk(pairs, \(control_state, outcome) {
   
   writexl::write_xlsx(
     vic_and_control_state,
-    paste0("C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/State/", "STATE_NO_CONTROLS_VIC_", control_state, "_", outcome, ".xlsx")
+    paste0("Data/Final Data/No Controls/State/", "STATE_NO_CONTROLS_VIC_", control_state, "_", outcome, ".xlsx")
   )
 })
 

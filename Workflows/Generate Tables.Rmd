@@ -24,8 +24,8 @@ LGAs_by_state
 
 ```{r}
 median_rent_summary <- build_LGA_and_observation_summary(outcome = "Median_Rent",
-                                     control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA",
-                                     non_control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA")
+                                     control_folder = "Data/Final Data/With Controls/LGA",
+                                     non_control_folder = "Data/Final Data/No Controls/LGA")
 median_rent_LGA <- build_valid_LGA_table(median_rent_summary$LGA_counts)
 cat(median_rent_LGA)
 ```
@@ -35,8 +35,8 @@ cat(median_rent_LGA)
 ```{r}
 
 new_bonds_summary <- build_LGA_and_observation_summary(outcome = "New_Bonds",
-                                     control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA",
-                                     non_control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA")
+                                     control_folder = "Data/Final Data/With Controls/LGA",
+                                     non_control_folder = "Data/Final Data/No Controls/LGA")
 
 new_bonds_LGA <- build_valid_LGA_table(new_bonds_summary$LGA_counts)
 cat(new_bonds_LGA)

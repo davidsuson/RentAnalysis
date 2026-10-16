@@ -5,8 +5,8 @@ output: html_document
 
 ```{r}
 
-median_rent <- run_did_regressions(non_control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA",
-                    control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA",
+median_rent <- run_did_regressions(non_control_folder = "Data/Final Data/No Controls/LGA",
+                    control_folder = "Data/Final Data/With Controls/LGA",
                     outcome = "Median_Rent")
 
 cat(build_did_table(median_rent, value = "pretest_p"))  
@@ -16,7 +16,7 @@ cat(build_did_table(median_rent, value = "att_se"))
 ```{r}
 
 new_bonds <- run_did_regressions(non_control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA",
-                    control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/With Controls/LGA",
+                    control_folder = "Data/Final Data/With Controls/LGA",
                     outcome = "New_Bonds")
 
 cat(build_did_table(new_bonds, value = "pretest_p"))  
@@ -25,7 +25,7 @@ cat(build_did_table(new_bonds, value = "att_se"))
 ```
 ```{r}
 
-export_combined_event_plots(median_rent, "Median Weekly Rent", "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Exhibits/Event Plots")
+export_combined_event_plots(median_rent, "Median Weekly Rent", "Exhibits/Event Plots")
 
-export_combined_event_plots(new_bonds, "Quarterly New Bonds", "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Exhibits/Event Plots")
+export_combined_event_plots(new_bonds, "Quarterly New Bonds", "Exhibits/Event Plots")
 ```
