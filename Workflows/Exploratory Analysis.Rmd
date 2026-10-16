@@ -16,13 +16,13 @@ This will compare median rent and new bonds lodged for all of VIC and NSW across
 5.  4 bedroom
 
 ```{r}
-state_plots <- plot_rent_and_new_bonds("Data/Final Data/No Controls/State", treated = c("VIC"), controls = c("NSW", "QLD", "SA"))
+state_plots <- plot_rent_and_new_bonds("Data/Final Data/No Controls/State", treated = c("VIC"), controls = c("NSW", "QLD", "SA"), period = "quarter")
 
 purrr::iwalk(state_plots, function(plot, name) {
   file_name <- gsub("[^A-Za-z0-9]+", "_", name)
 
   ggplot2::ggsave(
-    filename = file.path("Exhibits/State Plots/", paste0(file_name, ".png")),
+    filename = file.path("Exhibits/State Plots/Quarterly", paste0(file_name, " Quarterly.png")),
     plot = plot,
     width = 10,
     height = 12,
@@ -31,6 +31,37 @@ purrr::iwalk(state_plots, function(plot, name) {
 })
 ```
 
+```{r}
+state_plots <- plot_rent_and_new_bonds("Data/Final Data/No Controls/State", treated = c("VIC"), controls = c("NSW", "QLD", "SA"), period = "half")
+
+purrr::iwalk(state_plots, function(plot, name) {
+  file_name <- gsub("[^A-Za-z0-9]+", "_", name)
+
+  ggplot2::ggsave(
+    filename = file.path("Exhibits/State Plots/Half-Yearly", paste0(file_name, " Half-Yearly.png")),
+    plot = plot,
+    width = 10,
+    height = 12,
+    dpi = 300
+  )
+})
+```
+
+```{r}
+state_plots <- plot_rent_and_new_bonds("Data/Final Data/No Controls/State", treated = c("VIC"), controls = c("NSW", "QLD", "SA"), period = "year")
+
+purrr::iwalk(state_plots, function(plot, name) {
+  file_name <- gsub("[^A-Za-z0-9]+", "_", name)
+
+  ggplot2::ggsave(
+    filename = file.path("Exhibits/State Plots/Yearly", paste0(file_name, " Yearly.png")),
+    plot = plot,
+    width = 10,
+    height = 12,
+    dpi = 300
+  )
+})
+```
 # Descriptive Statistics
 
 ```{r}

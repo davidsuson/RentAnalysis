@@ -13,14 +13,21 @@
 #' @param treated A string. The treated state, plotted in every chart.
 #' @param controls A character vector. The states the treated state is
 #'   plotted against.
+#' @param period A string. Time unit to plot: `"quarter"` (default), `"half"`
+#'   (half-years: Jan-Jun, Jul-Dec) or `"year"` (calendar years). For longer
+#'   periods, new bonds are summed and median rent is the mean of the
+#'   quarterly medians. Periods missing any quarter are dropped.
 #'
 #' @returns A named list of patchwork figures, one per dwelling/bedroom
 #'   combination. Names take the form "Dwelling with num_bedroom/s".
 #'
 #' @seealso [load_rent_and_bond_data()]
-plot_rent_and_new_bonds <- function(folder, treated, controls) {
+plot_rent_and_new_bonds <- function(folder, treated, controls,period = c("quarter", "half", "year")) {
 
-  data <- load_rent_and_bond_data(folder)
+  period <- match.arg(period)
+
+  data <- load_rent_and_bond_data(folder) |>
+    aggregate_to_period(period)
 
   combos <- data |>
     dplyr::filter(State != treated) |>
@@ -254,4 +261,42 @@ plot_bond <- function(data, palette) {
     ggplot2::labs(x = "Date", y = "New Bonds (000s)", colour = "State") +
     ggplot2::scale_y_continuous(labels = scales::label_number(scale = 1e-3)) +
     ggplot2::theme_minimal()
+}
+
+#' aggregate_to_period
+#'
+#' Collapses quarterly data to half-years or calendar years. New bonds are
+#' summed and median rent is averaged across the quarters in each period.
+#' Periods that don't contain every quarter are dropped.
+#'
+#' `Quarter_Start_Date` is overwritten with the period's start date so the
+#' plotting helpers work unchanged.
+#'
+#' @param data A data frame from [load_rent_and_bond_data()].
+#' @param period A string. `"quarter"`, `"half"` or `"year"`.
+#'
+#' @returns A tibble with the same columns as `data`.
+aggregate_to_period <- function(data, period) {
+
+  if (period == "quarter") return(data)
+
+  quarters_per_period <- c(half = 2, year = 4)[[period]]
+
+  data |>
+    dplyr::mutate(
+      date        = as.Date(Quarter_Start_Date),
+      year        = as.integer(format(date, "%Y")),
+      month       = as.integer(format(date, "%m")),
+      start_month = if (period == "half") ifelse(month <= 6, 1L, 7L) else 1L,
+      Quarter_Start_Date = as.Date(sprintf("%d-%02d-01", year, start_month))
+    ) |>
+    dplyr::group_by(State_Pair, State, Dwelling, Bedrooms, Quarter_Start_Date) |>
+    dplyr::summarise(
+      n_quarters  = dplyr::n(),
+      Median_Rent = mean(Median_Rent),
+      New_Bonds   = sum(New_Bonds),
+      .groups     = "drop"
+    ) |>
+    dplyr::filter(n_quarters == quarters_per_period) |>
+    dplyr::select(-n_quarters)
 }

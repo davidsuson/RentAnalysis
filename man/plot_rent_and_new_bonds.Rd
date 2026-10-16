@@ -4,7 +4,12 @@
 \alias{plot_rent_and_new_bonds}
 \title{plot_rent_and_new_bonds}
 \usage{
-plot_rent_and_new_bonds(folder, treated, controls)
+plot_rent_and_new_bonds(
+  folder,
+  treated,
+  controls,
+  period = c("quarter", "half", "year")
+)
 }
 \arguments{
 \item{folder}{A string. Path to the folder of state-level Excel files.
@@ -16,6 +21,11 @@ sheet must contain the columns \code{State}, \code{Dwelling}, \code{Bedrooms},
 
 \item{controls}{A character vector. The states the treated state is
 plotted against.}
+
+\item{period}{A string. Time unit to plot: \code{"quarter"} (default), \code{"half"}
+(half-years: Jan-Jun, Jul-Dec) or \code{"year"} (calendar years). For longer
+periods, new bonds are summed and median rent is the mean of the
+quarterly medians. Periods missing any quarter are dropped.}
 }
 \value{
 A named list of patchwork figures, one per dwelling/bedroom
