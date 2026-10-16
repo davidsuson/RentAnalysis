@@ -47,7 +47,7 @@ build_summary_stat_table <- function(non_control_folder,
   var_order  <- unique(c(outcomes, controls))
   var_labels <- c(
     New_Bonds     = "New Bonds",
-    Median_Rent   = "Median New Rent",
+    Median_Rent   = "Median Rent",
     Num_Earners   = "Number of Earners",
     Median_Age    = "Median Age",
     Median_Income = "Median Income"
@@ -101,11 +101,25 @@ build_summary_stat_table <- function(non_control_folder,
     "Panel B: With controls"    = sum(wide$Control)
   )
 
+  # Horizontal rules: last row of each state pair, except at the end of a panel
+  pair_id   <- paste(wide$Control, wide$State_Pair)
+  next_id   <- c(pair_id[-1], NA)
+  next_ctrl <- c(wide$Control[-1], NA)
+  pair_ends <- which(pair_id != next_id & wide$Control == next_ctrl)
+  row_seps  <- rep("", nrow(wide))
+  row_seps[pair_ends] <- "\\midrule"
+
   wide <- dplyr::select(wide, Sample, Variable, dplyr::all_of(col_spec$key))
 
   # Spanning header: run lengths of consecutive groups
   groups <- rle(col_spec$group)
   header <- c(" " = 2, stats::setNames(groups$lengths, groups$values))
+
+  # Vertical rules after the label columns and between dwelling groups
+  group_ends <- cumsum(groups$lengths)
+  num_align  <- rep("r", nrow(col_spec))
+  num_align[utils::head(group_ends, -1)] <- "r|"
+  align <- c("l", "l|", num_align)
 
   kableExtra::kbl(
     wide,
@@ -114,20 +128,23 @@ build_summary_stat_table <- function(non_control_folder,
     caption     = paste(stat_name, "of outcomes and controls, by sample"),
     label       = paste0("summary_", stat),
     col.names   = c("Sample", "Variable", col_spec$label),
-    align       = c("l", "l", rep("r", nrow(col_spec))),
+    align       = align,
+    linesep     = row_seps,
     digits      = digits,
     format.args = list(big.mark = ",")
   ) |>
     kableExtra::add_header_above(header) |>
     kableExtra::pack_rows(
-      index             = panels,
-      bold              = FALSE,
-      italic            = TRUE,
-      indent            = FALSE,
-      latex_gap_space   = "0.5em",
-      extra_latex_after = "\\addlinespace[2pt]"
+      index           = panels,
+      bold            = FALSE,
+      italic          = TRUE,
+      indent          = FALSE,
+      latex_gap_space = "0.5em"
     )
 }
+
+
+
 
 
 # HELPERS ----------------------------------------------------------------------
