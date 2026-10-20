@@ -3,6 +3,16 @@ title: "Testing Parallel Trends"
 output: html_document
 ---
 
+#set up: ***make this native to your file structure!***
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Set the global working directory for ALL notebook chunks here:
+knitr::opts_knit$set(root.dir = "C:/Users/vidpgcn/OneDrive - VicGov/Documents/Personal/Master of Economics/Microeconometrics/Report/RentAnalysis-main")
+```
+
+
+
 ```{r}
 
 median_rent <- run_did_regressions(non_control_folder = "Data/Final Data/No Controls/LGA",
@@ -15,7 +25,7 @@ cat(build_did_table(median_rent, value = "att_se"))
 ```
 ```{r}
 
-new_bonds <- run_did_regressions(non_control_folder = "C:/Users/David/Desktop/MicroEcon - Rent/RentAnalysis/Data/Final Data/No Controls/LGA",
+new_bonds <- run_did_regressions(non_control_folder = "Data/Final Data/No Controls/LGA",
                     control_folder = "Data/Final Data/With Controls/LGA",
                     outcome = "New_Bonds")
 
@@ -29,3 +39,25 @@ export_combined_event_plots(median_rent, "Median Weekly Rent", "Exhibits/Event P
 
 export_combined_event_plots(new_bonds, "Quarterly New Bonds", "Exhibits/Event Plots")
 ```
+
+###Running individual DiD regression (Calloway Sant'Anna)
+
+```{r}
+
+#Check
+# model you want to run, this code below is for checking impact on median rent (or, bonds), from the non-control data, for the pairing Vic and NSW, for 1 bedroom flats 
+target_model1 <- median_rent$non_control$VIC_NSW$Flat_1$model
+
+# (Y)
+cat("Outcome Variable (Y):", target_model1$yname, "\n")
+# Covariates formula (X)
+cat("Regression Formula (X):", deparse(target_model1$Xformula), "\n")
+
+summary(median_rent$control$VIC_NSW$Flat_1$model)
+
+
+
+```
+
+
+
