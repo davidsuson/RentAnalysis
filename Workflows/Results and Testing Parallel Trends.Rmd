@@ -3,16 +3,6 @@ title: "Testing Parallel Trends"
 output: html_document
 ---
 
-#set up: ***make this native to your file structure!***
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-
-# Set the global working directory for ALL notebook chunks here:
-knitr::opts_knit$set(root.dir = "C:/Users/vidpgcn/OneDrive - VicGov/Documents/Personal/Master of Economics/Microeconometrics/Report/RentAnalysis-main")
-```
-
-
-
 ```{r}
 
 median_rent <- run_did_regressions(non_control_folder = "Data/Final Data/No Controls/LGA",
