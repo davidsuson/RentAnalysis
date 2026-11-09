@@ -4,6 +4,11 @@ output: html_document
 ---
 
 ```{r}
+library(devtools)
+load_all()
+```
+
+```{r}
 
 median_rent <- run_did_regressions(non_control_folder = "Data/Final Data/No Controls/LGA",
                     control_folder = "Data/Final Data/With Controls/LGA",
@@ -13,6 +18,7 @@ cat(build_did_table(median_rent, value = "pretest_p"))
 cat("\n -------------------------------------------- \n")
 cat(build_did_table(median_rent, value = "att_se"))     
 ```
+
 ```{r}
 
 new_bonds <- run_did_regressions(non_control_folder = "Data/Final Data/No Controls/LGA",
@@ -23,6 +29,7 @@ cat(build_did_table(new_bonds, value = "pretest_p"))
 cat("\n -------------------------------------------- \n")
 cat(build_did_table(new_bonds, value = "att_se"))     
 ```
+
 ```{r}
 
 export_combined_event_plots(median_rent, "Median Weekly Rent", "Exhibits/Event Plots")

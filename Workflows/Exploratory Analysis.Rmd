@@ -5,6 +5,11 @@ output: html_document
 
 This document will show all the figures and tables for the exploratory analysis done in the report.
 
+```{r}
+library(devtools)
+load_all()
+```
+
 # Comparing median rent and new bonds lodged
 
 This will compare median rent and new bonds lodged for all of VIC and NSW across:
